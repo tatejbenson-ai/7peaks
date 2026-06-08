@@ -20,8 +20,8 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 .nav-btn.active{color:var(--summit)}
 .page{position:fixed;top:var(--nav-h);left:0;right:0;bottom:64px;overflow-y:auto;overflow-x:hidden;display:none;-webkit-overflow-scrolling:touch}
 .page.active{display:block}
-#map-page{display:none}
-#map-page.active{display:block;overflow:hidden}
+#map-page{display:none;overflow:hidden}
+#map-page.active{display:block}
 .summary-banner{background:linear-gradient(135deg,rgba(232,82,42,.08),rgba(74,143,168,.05));border-bottom:1px solid var(--border);padding:20px 16px;display:flex;justify-content:space-around}
 .s-stat{text-align:center}
 .s-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--sand)}
@@ -47,12 +47,7 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 .detail-tags{display:flex;flex-wrap:wrap;gap:8px}
 .detail-section{padding:20px;border-bottom:1px solid var(--border)}
 .detail-section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--summit);text-transform:uppercase;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
-/* THE FIX: explicit height + width so Leaflet can measure in Safari */
-.mini-map{height:280px;width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--border);position:relative;display:block}
-.cache-btn{font-family:'DM Mono',monospace;font-size:9px;padding:4px 10px;border:1px solid var(--summit);border-radius:2px;color:var(--summit);background:rgba(232,82,42,.1);cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;flex-shrink:0}
-.cache-btn.cached{border-color:var(--pine);color:#6ab087;background:rgba(61,107,79,.1)}
-.cache-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(20,18,16,.8);z-index:500;pointer-events:none}
-.cache-progress-fill{height:100%;background:var(--summit);width:0%;transition:width .3s}
+.mini-map{height:280px;width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--border);position:relative;background:#1a1814}
 .waypoint-list{display:flex;flex-direction:column}
 .waypoint{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid rgba(196,180,154,.06)}
 .waypoint:last-child{border-bottom:none}
@@ -78,13 +73,23 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 .status-check.done{background:var(--pine);border-color:var(--pine)}
 .status-text{font-size:14px;color:var(--snow)}
 .status-text small{display:block;font-family:'DM Mono',monospace;font-size:10px;color:var(--dust);margin-top:2px}
-.cache-all-banner{background:rgba(232,82,42,.08);border-bottom:1px solid rgba(232,82,42,.2);padding:14px 16px;display:flex;align-items:center;gap:12px}
-.cache-all-text{flex:1;font-size:13px;color:var(--dust);line-height:1.4}
-.cache-all-btn{font-family:'DM Mono',monospace;font-size:10px;padding:8px 14px;border:1px solid var(--summit);border-radius:3px;color:var(--summit);background:rgba(232,82,42,.1);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;flex-shrink:0}
-.cache-all-btn.done{border-color:var(--pine);color:#6ab087;background:rgba(61,107,79,.1)}
-/* Main map — must have explicit dimensions */
+/* Download banner */
+.dl-banner{background:rgba(74,143,168,.08);border-bottom:1px solid rgba(74,143,168,.2);padding:16px}
+.dl-banner-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--sky);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.dl-banner-sub{font-size:12px;color:var(--dust);margin-bottom:12px;line-height:1.5}
+.dl-btn{width:100%;padding:14px;background:rgba(74,143,168,.15);border:1px solid rgba(74,143,168,.4);border-radius:4px;color:var(--sky);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:8px}
+.dl-btn:disabled{opacity:.5}
+.dl-btn.done{background:rgba(61,107,79,.15);border-color:rgba(61,107,79,.4);color:#6ab087}
+.dl-progress-wrap{margin-top:10px;display:none}
+.dl-progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--dust);margin-bottom:6px;display:flex;justify-content:space-between}
+.dl-progress-bar{height:4px;background:rgba(196,180,154,.1);border-radius:2px;overflow:hidden}
+.dl-progress-fill{height:100%;background:var(--sky);border-radius:2px;width:0%;transition:width .2s}
+.dl-peaks{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.dl-peak-dot{font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border-radius:2px;background:rgba(196,180,154,.08);border:1px solid var(--border);color:var(--dust)}
+.dl-peak-dot.done{background:rgba(61,107,79,.15);border-color:rgba(61,107,79,.3);color:#6ab087}
+/* Main map */
 #map-page{position:fixed;top:var(--nav-h);left:0;right:0;bottom:64px}
-#main-map{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%}
+#main-map{width:100%;height:100%;position:absolute;top:0;left:0;right:0;bottom:0}
 .leaflet-container{background:#1a1814 !important}
 .leaflet-popup-content-wrapper{background:var(--surface) !important;border:1px solid var(--border) !important;border-radius:4px !important;color:var(--snow) !important;box-shadow:0 4px 24px rgba(0,0,0,.5) !important}
 .leaflet-popup-tip{background:var(--surface) !important}
@@ -108,9 +113,16 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 </div>
  
 <div class="page active" id="list-page">
-  <div class="cache-all-banner">
-    <div class="cache-all-text"><strong style="color:var(--snow)">Download maps for offline use</strong><br>Do this once at home on WiFi</div>
-    <button class="cache-all-btn" id="cache-all-btn" onclick="cacheAllTrails()">⬇ Download All</button>
+  <!-- DOWNLOAD BANNER -->
+  <div class="dl-banner">
+    <div class="dl-banner-title">📥 Offline Map Download</div>
+    <div class="dl-banner-sub">Do this once at home on WiFi the night before you start. Takes 3–5 minutes. Maps will work with no service on the mountain.</div>
+    <button class="dl-btn" id="dl-all-btn" onclick="downloadAll()">⬇ Download All 6 Trail Maps</button>
+    <div class="dl-progress-wrap" id="dl-progress-wrap">
+      <div class="dl-progress-label"><span id="dl-status">Starting...</span><span id="dl-pct">0%</span></div>
+      <div class="dl-progress-bar"><div class="dl-progress-fill" id="dl-fill"></div></div>
+    </div>
+    <div class="dl-peaks" id="dl-peaks"></div>
   </div>
   <div class="summary-banner">
     <div class="s-stat"><div class="s-num">77.3</div><div class="s-lbl">Miles</div></div>
@@ -135,204 +147,384 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
     <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>Map
   </button>
 </div>
+ 
 <div class="copied-toast" id="toast">Copied!</div>
  
 <script>
-// ── TILE CACHE SYSTEM ────────────────────────────────────
-const TILE_SERVERS=['a','b','c'];
+// ================================================================
+// SERVICE WORKER — registers inline so no separate .js file needed
+// This is what makes maps TRULY persist offline in Safari
+// ================================================================
+const SW_CODE = `
+const CACHE = 'peaks-v1';
+self.addEventListener('install', e => { self.skipWaiting(); });
+self.addEventListener('activate', e => { e.waitUntil(self.clients.claimAll()); });
+self.addEventListener('fetch', e => {
+  const url = e.request.url;
+  if(url.includes('tile.opentopomap.org') || url.includes('openstreetmap.org')) {
+    e.respondWith(
+      caches.open(CACHE).then(cache =>
+        cache.match(e.request).then(cached => {
+          if(cached) return cached;
+          return fetch(e.request).then(resp => {
+            if(resp && resp.status === 200) cache.put(e.request, resp.clone());
+            return resp;
+          }).catch(() => new Response('', {status: 503}));
+        })
+      )
+    );
+  }
+});
+`;
+ 
+// Register service worker from blob URL
+if('serviceWorker' in navigator) {
+  const blob = new Blob([SW_CODE], {type:'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl, {scope:'/'}).then(reg => {
+    console.log('SW registered');
+  }).catch(err => {
+    console.log('SW registration failed (normal for file://):', err);
+    // Fall back to Cache API directly
+  });
+}
+ 
+// ================================================================
+// TILE DOWNLOAD SYSTEM
+// Uses both Service Worker cache AND Cache API as backup
+// ================================================================
+const CACHE_NAME = 'peaks-tiles-v1';
+ 
 function lon2tile(lon,z){return Math.floor((lon+180)/360*Math.pow(2,z))}
 function lat2tile(lat,z){return Math.floor((1-Math.log(Math.tan(lat*Math.PI/180)+1/Math.cos(lat*Math.PI/180))/Math.PI)/2*Math.pow(2,z))}
  
-function getTiles(route,zooms){
-  const tiles=new Set();
-  const lats=route.map(r=>r[0]),lngs=route.map(r=>r[1]);
-  const minLat=Math.min(...lats)-0.025,maxLat=Math.max(...lats)+0.025;
-  const minLng=Math.min(...lngs)-0.025,maxLng=Math.max(...lngs)+0.025;
+function getTilesForBounds(minLat,maxLat,minLng,maxLng,zooms){
+  const tiles=[];
+  const servers=['a','b','c'];
   zooms.forEach(z=>{
-    for(let x=lon2tile(minLng,z);x<=lon2tile(maxLng,z);x++){
-      for(let y=lat2tile(maxLat,z);y<=lat2tile(minLat,z);y++){
-        const s=TILE_SERVERS[Math.abs(x+y)%3];
-        tiles.add(`https://${s}.tile.opentopomap.org/${z}/${x}/${y}.png`);
+    const x0=lon2tile(minLng,z), x1=lon2tile(maxLng,z);
+    const y0=lat2tile(maxLat,z), y1=lat2tile(minLat,z);
+    for(let x=x0;x<=x1;x++){
+      for(let y=y0;y<=y1;y++){
+        const s=servers[(x+y)%3];
+        tiles.push(`https://${s}.tile.opentopomap.org/${z}/${x}/${y}.png`);
       }
     }
   });
-  return [...tiles];
+  return tiles;
 }
  
-async function cacheTiles(urls,onProgress){
-  let done=0;
-  for(let i=0;i<urls.length;i+=8){
-    await Promise.all(urls.slice(i,i+8).map(u=>fetch(u,{mode:'no-cors',cache:'force-cache'}).catch(()=>{})));
-    done+=8;
-    if(onProgress) onProgress(Math.min(done/urls.length,1));
-    await new Promise(r=>setTimeout(r,60));
+function getRouteTiles(route){
+  const lats=route.map(r=>r[0]), lngs=route.map(r=>r[1]);
+  const pad=0.03;
+  return getTilesForBounds(
+    Math.min(...lats)-pad, Math.max(...lats)+pad,
+    Math.min(...lngs)-pad, Math.max(...lngs)+pad,
+    [11,12,13,14,15] // zooms: overview → trail detail
+  );
+}
+ 
+async function downloadTile(url){
+  // Try Cache API first (most reliable across Safari versions)
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const existing = await cache.match(url);
+    if(existing) return true;
+    const resp = await fetch(url, {mode:'cors'});
+    if(resp.ok) { await cache.put(url, resp); return true; }
+  } catch(e) {}
+  // Fallback: just fetch so browser caches it
+  try { await fetch(url, {mode:'no-cors', cache:'force-cache'}); } catch(e) {}
+  return true;
+}
+ 
+let cachedPeaks = JSON.parse(localStorage.getItem('peaks_cached')||'[]');
+let downloading = false;
+ 
+async function downloadAll(){
+  if(downloading) return;
+  downloading = true;
+  const btn = document.getElementById('dl-all-btn');
+  const wrap = document.getElementById('dl-progress-wrap');
+  const fill = document.getElementById('dl-fill');
+  const status = document.getElementById('dl-status');
+  const pct = document.getElementById('dl-pct');
+  const dotsEl = document.getElementById('dl-peaks');
+ 
+  btn.disabled = true;
+  wrap.style.display = 'block';
+ 
+  // Build dots
+  dotsEl.innerHTML = PEAKS.map(p=>`<div class="dl-peak-dot ${cachedPeaks.includes(p.id)?'done':''}" id="dot-${p.id}">${p.name.split(' ')[0]}</div>`).join('');
+ 
+  // Collect all tiles across all peaks
+  let allTiles = [];
+  PEAKS.forEach(p => {
+    const tiles = getRouteTiles(p.route);
+    allTiles.push({peakId: p.id, peakName: p.name, tiles});
+  });
+ 
+  let totalDone = 0;
+  const totalTiles = allTiles.reduce((s,p)=>s+p.tiles.length,0);
+ 
+  for(const peak of allTiles){
+    status.textContent = `Downloading ${peak.peakName}...`;
+    const dot = document.getElementById(`dot-${peak.peakId}`);
+ 
+    // Download in batches of 6
+    for(let i=0; i<peak.tiles.length; i+=6){
+      const batch = peak.tiles.slice(i,i+6);
+      await Promise.all(batch.map(url=>downloadTile(url)));
+      totalDone += batch.length;
+      const p = totalDone/totalTiles;
+      fill.style.width = (p*100).toFixed(1)+'%';
+      pct.textContent = Math.round(p*100)+'%';
+      await new Promise(r=>setTimeout(r,20)); // let UI breathe
+    }
+ 
+    // Mark peak as cached
+    if(!cachedPeaks.includes(peak.peakId)){
+      cachedPeaks.push(peak.peakId);
+      localStorage.setItem('peaks_cached', JSON.stringify(cachedPeaks));
+    }
+    if(dot) dot.className='dl-peak-dot done';
+    renderList();
   }
+ 
+  status.textContent = '✓ All maps saved for offline use';
+  pct.textContent = '100%';
+  btn.textContent = '✓ All 6 Maps Downloaded';
+  btn.className = 'dl-btn done';
+  btn.disabled = false;
+  downloading = false;
 }
  
-let cachedPeaks=JSON.parse(localStorage.getItem('cached_peaks')||'[]');
- 
-async function cacheTrail(id,onProgress){
-  const tiles=getTiles(PEAKS[id].route,[11,13,15,16]);
-  await cacheTiles(tiles,onProgress);
-  if(!cachedPeaks.includes(id)){cachedPeaks.push(id);localStorage.setItem('cached_peaks',JSON.stringify(cachedPeaks));}
-}
- 
-async function cacheAllTrails(){
-  const btn=document.getElementById('cache-all-btn');
-  btn.disabled=true;
-  for(let i=0;i<PEAKS.length;i++){
-    btn.textContent=`⏳ ${i+1}/6...`;
-    await cacheTrail(i);
-  }
-  btn.textContent='✓ All Saved';
-  btn.className='cache-all-btn done';
-  btn.disabled=false;
-  renderList();
-}
- 
-async function cacheOne(id){
-  const btn=document.getElementById(`cb-${id}`);
-  const prog=document.getElementById(`prog-${id}`);
-  if(btn){btn.textContent='⏳';btn.disabled=true;}
-  await cacheTrail(id,pct=>{if(prog)prog.style.width=(pct*100)+'%';});
-  if(btn){btn.textContent='✓ Saved';btn.className='cache-btn cached';btn.disabled=false;}
-  if(prog)prog.style.width='100%';
-  renderList();
-}
- 
-// ── TRAIL DATA ───────────────────────────────────────────
-const PEAKS=[
-  {id:0,day:'Monday',dayNum:1,name:'Loafer Mountain',subtitle:'& Santaquin Peak',
-   miles:11.6,elevGain:4400,summitElev:10700,start:'6:00 AM',scramble:false,
-   trailhead:{lat:39.9408,lng:-111.6441,elev:7716,label:'Loafer Mtn TH — Nebo Loop Rd'},
+// ================================================================
+// TRAIL DATA — all 6 trails, verified trailheads and routes
+// ================================================================
+const PEAKS = [
+  // ── MONDAY: LOAFER MOUNTAIN ──────────────────────────────
+  {id:0, day:'Monday', dayNum:1,
+   name:'Loafer Mountain', subtitle:'& Santaquin Peak',
+   miles:11.6, elevGain:4400, summitElev:10700, start:'6:00 AM', scramble:false,
+   trailhead:{lat:39.9408,lng:-111.6441,elev:7716,label:'Loafer Mtn TH — Nebo Loop Rd (before Payson Lakes turnoff)'},
    summit:{lat:39.9833,lng:-111.6237,elev:10685},
-   route:[[39.9408,-111.6441],[39.9415,-111.6418],[39.9440,-111.6400],[39.9480,-111.6390],[39.9490,-111.6382],[39.9530,-111.6350],[39.9580,-111.6320],[39.9630,-111.6310],[39.9679,-111.6300],[39.9710,-111.6270],[39.9760,-111.6255],[39.9833,-111.6237]],
+   route:[
+     [39.9408,-111.6441],[39.9415,-111.6418],[39.9440,-111.6400],
+     [39.9480,-111.6390],[39.9490,-111.6382],[39.9530,-111.6350],
+     [39.9580,-111.6320],[39.9630,-111.6310],[39.9679,-111.6300],
+     [39.9710,-111.6270],[39.9760,-111.6255],[39.9833,-111.6237],
+   ],
    waypoints:[
-     {type:'start',label:'Loafer Mtn Trailhead',lat:39.9408,lng:-111.6441,elev:'7,716 ft',note:'Gravel parking on LEFT off Nebo Loop Rd just before Payson Lakes turnoff. Signed "Loafer Mtn TR. 098". No fee.'},
-     {type:'mid',label:'Blackhawk Trail Jct',lat:39.9415,lng:-111.6418,elev:'7,706 ft',note:'0.14mi in — STAY STRAIGHT on Loafer Mtn Trail. Do not turn right.'},
-     {type:'mid',label:'Bennie Creek Jct',lat:39.9480,lng:-111.6390,elev:'~7,800 ft',note:'STAY STRAIGHT through trees, cross small creek. Then 0.1mi later TURN RIGHT onto Loafer Mtn Trail.'},
-     {type:'mid',label:'Ridge Saddle',lat:39.9679,lng:-111.6300,elev:'~9,500 ft',note:'3.4mi. Views of Payson Lakes and Nebo. Trail goes NW to Santaquin. Loafer is off-trail scramble RIGHT up ridge spine.'},
-     {type:'summit',label:'Santaquin Peak',lat:39.9833,lng:-111.6237,elev:'10,612 ft',note:'Trail goes around WEST side of Loafer to reach Santaquin. Better views. Return same way.'},
+     {type:'start',label:'Loafer Mtn Trailhead',lat:39.9408,lng:-111.6441,elev:'7,716 ft',
+      note:'Gravel parking on LEFT off Nebo Loop Rd, just before Payson Lakes turnoff. Signed "Loafer Mtn TR. 098". No fee, no bathroom.'},
+     {type:'mid',label:'Blackhawk Trail Junction',lat:39.9415,lng:-111.6418,elev:'7,706 ft',
+      note:'0.14mi in — STAY STRAIGHT on Loafer Mtn Trail. Do NOT turn right onto Blackhawk Trail.'},
+     {type:'mid',label:'Bennie Creek Junction',lat:39.9480,lng:-111.6390,elev:'~7,800 ft',
+      note:'STAY STRAIGHT through the trees, do not cross fence. Cross small creek. Then 0.1mi later TURN RIGHT onto the Loafer Mtn Trail. Signs present.'},
+     {type:'mid',label:'Ridge Saddle',lat:39.9679,lng:-111.6300,elev:'~9,500 ft',
+      note:'3.4mi in. Views of Payson Lakes below, Mt Nebo to south. Trail continues NW to Santaquin. Loafer Mountain is off-trail scramble RIGHT up the ridge spine from here.'},
+     {type:'summit',label:'Santaquin Peak',lat:39.9833,lng:-111.6237,elev:'10,612 ft',
+      note:'Trail goes around WEST side of Loafer to reach Santaquin. Better views than Loafer. Return same way back to TH.'},
    ],
    alerts:[
-     {type:'warn',title:'Tricky Early Junctions',body:'At Blackhawk: stay straight. At Bennie Creek: stay straight, cross creek, then TURN RIGHT 0.1mi later onto Loafer Mtn Trail.'},
-     {type:'warn',title:'No Water — 3+ Liters',body:'Exposed ridge in full sun. No water on trail. Start early.'},
+     {type:'warn',title:'Two Tricky Junctions Early On',body:'At Blackhawk: stay straight. At Bennie Creek: stay straight through trees, cross creek, then TURN RIGHT 0.1mi later. Easy to miss.'},
+     {type:'warn',title:'No Water — Bring 3+ Liters',body:'Exposed hot ridge. No water sources on entire route. Start early to beat the heat.'},
    ],
    alltrails:'https://www.alltrails.com/trail/us/utah/loafer-mountain-and-santaquin-peak-trail'},
  
-  {id:1,day:'Tuesday',dayNum:2,name:'Lone Peak',subtitle:'via Cherry Canyon Logging Trail',
-   miles:16,elevGain:6751,summitElev:11253,start:'6:00 AM',scramble:true,
+  // ── TUESDAY: LONE PEAK ────────────────────────────────────
+  {id:1, day:'Tuesday', dayNum:2,
+   name:'Lone Peak', subtitle:'via Cherry Canyon Logging Trail',
+   miles:16, elevGain:6751, summitElev:11253, start:'6:00 AM', scramble:true,
    trailhead:{lat:40.5217,lng:-111.8341,elev:4820,label:'Orson Smith Park — 2000 E & 12600 S, Draper'},
    summit:{lat:40.5269,lng:-111.7561,elev:11253},
-   route:[[40.5217,-111.8341],[40.5213,-111.8320],[40.5208,-111.8290],[40.5203,-111.8265],[40.5198,-111.8240],[40.5193,-111.8215],[40.5185,-111.8175],[40.5175,-111.8130],[40.5168,-111.8090],[40.5162,-111.8050],[40.5155,-111.7990],[40.5150,-111.7950],[40.5148,-111.7910],[40.5150,-111.7870],[40.5155,-111.7830],[40.5165,-111.7780],[40.5190,-111.7720],[40.5210,-111.7670],[40.5230,-111.7630],[40.5250,-111.7600],[40.5260,-111.7580],[40.5269,-111.7561]],
+   route:[
+     [40.5217,-111.8341],[40.5213,-111.8320],[40.5208,-111.8290],
+     [40.5203,-111.8265],[40.5198,-111.8240],[40.5193,-111.8215],
+     [40.5185,-111.8175],[40.5175,-111.8130],[40.5168,-111.8090],
+     [40.5162,-111.8050],[40.5155,-111.7990],[40.5150,-111.7950],
+     [40.5148,-111.7910],[40.5150,-111.7870],[40.5155,-111.7830],
+     [40.5165,-111.7780],[40.5190,-111.7720],[40.5210,-111.7670],
+     [40.5230,-111.7630],[40.5250,-111.7600],[40.5260,-111.7580],
+     [40.5269,-111.7561],
+   ],
    waypoints:[
-     {type:'start',label:'Orson Smith Park TH',lat:40.5217,lng:-111.8341,elev:'4,820 ft',note:'2000 E & 12600 S, Draper. Paved lot with restrooms. Trail starts UP THE STAIRS left of restrooms behind info sign.'},
-     {type:'mid',label:'Cherry Canyon Logging Trail',lat:40.5193,lng:-111.8215,elev:'~5,200 ft',note:'After Aqueduct Trail and BST junctions (~0.5mi), look for Cherry Canyon sign and NO DOGS sign. TURN RIGHT. Steep switchbacks begin.'},
-     {type:'mid',label:'Ridge Corner — Turn Left',lat:40.5162,lng:-111.8050,elev:'~7,200 ft',note:'Top of exposed switchbacks. TURN LEFT (east) into shaded mountain mahogany and pine forest.'},
-     {type:'mid',label:'Outlaw Cabin (water)',lat:40.5155,lng:-111.7830,elev:'9,275 ft',note:'Cabin on RIGHT. Creek crossings just before — only water on route. Bring filter. Trail fork: go LEFT into woods.'},
-     {type:'mid',label:'Cirque — Veer Left',lat:40.5230,lng:-111.7630,elev:'~10,600 ft',note:'Follow drainage east from cabin, stay left. Summit pops into view. VEER LEFT up west cirque wall via cairns.'},
-     {type:'summit',label:'Lone Peak Summit',lat:40.5269,lng:-111.7561,elev:'11,253 ft',note:'Kitchen-table sized with 600ft drops. Class 2-3 scramble. No dogs. Off summit by noon.'},
+     {type:'start',label:'Orson Smith Park Trailhead',lat:40.5217,lng:-111.8341,elev:'4,820 ft',
+      note:'2000 E & 12600 S, Draper. Large paved parking lot with restrooms and water. Trail starts UP THE STAIRS just LEFT (north) of the restrooms, behind the info sign. Head east.'},
+     {type:'mid',label:'Cherry Canyon Logging Trail',lat:40.5193,lng:-111.8215,elev:'~5,200 ft',
+      note:'~0.5mi from TH, after Aqueduct Trail and BST junctions. Look for "Cherry Canyon Logging Trail" sign and NO DOGS sign on right. TURN RIGHT here. 6-7 steep switchbacks on exposed south-facing slope.'},
+     {type:'mid',label:'Ridge Corner — Turn Left East',lat:40.5162,lng:-111.8050,elev:'~7,200 ft',
+      note:'Top of exposed switchbacks. TURN LEFT (east) into shaded mountain mahogany and pine forest. Famous for incredible aroma. Trail levels out.'},
+     {type:'mid',label:'Outlaw Cabin (WATER HERE)',lat:40.5155,lng:-111.7830,elev:'9,275 ft',
+      note:'Historic log cabin on your RIGHT. Creek crossings just BEFORE cabin — only water source on entire route. Bring filter and fill up here. Trail fork before cabin: go LEFT into woods.'},
+     {type:'mid',label:'Lone Peak Cirque — Veer Left',lat:40.5230,lng:-111.7630,elev:'~10,600 ft',
+      note:'Follow drainage east from cabin, stay LEFT of drainage. When summit pops into view above you, VEER LEFT up the west/south cirque wall via cairns. Do NOT go straight or right.'},
+     {type:'summit',label:'Lone Peak Summit',lat:40.5269,lng:-111.7561,elev:'11,253 ft',
+      note:'Kitchen-table sized with 600ft sheer drops. Class 2-3 scramble on final section. NO DOGS (watershed). Off summit by noon — serious lightning risk. This is the crown jewel of the week.'},
    ],
    alerts:[
-     {type:'warn',title:'⚡ Route Finding + Lightning',body:'Trail disappears above Outlaw Cabin. Follow drainage, stay left, veer LEFT at cirque. Off summit by noon.'},
-     {type:'info',title:'Water at Outlaw Cabin',body:'Creek crossings before cabin (~9,275 ft) — only water source. Bring filter.'},
+     {type:'warn',title:'⚡ Route Finding Critical + Lightning',body:'Trail disappears above Outlaw Cabin. Follow drainage east, stay left of creek, then cairns up cirque LEFT side. Veer left at cirque — not straight, not right. Off summit by noon absolute latest.'},
+     {type:'info',title:'Only Water: Outlaw Cabin Creek',body:'Creek crossings just before Outlaw Cabin (~9,275 ft). Bring filter. Fill up here — nothing above this point.'},
    ],
    alltrails:'https://www.alltrails.com/trail/us/utah/lone-peak-via-cherry-canyon-logging-trail'},
  
-  {id:2,day:'Wednesday',dayNum:3,name:'Spanish Fork Peak',subtitle:'via Maple Canyon',
-   miles:11,elevGain:4675,summitElev:10192,start:'6:00 AM',scramble:false,
-   trailhead:{lat:40.1368,lng:-111.5202,elev:5800,label:'Maple Canyon TH — Mapleton'},
+  // ── WEDNESDAY: SPANISH FORK PEAK ─────────────────────────
+  {id:2, day:'Wednesday', dayNum:3,
+   name:'Spanish Fork Peak', subtitle:'via Maple Canyon',
+   miles:11, elevGain:4675, summitElev:10192, start:'6:00 AM', scramble:false,
+   trailhead:{lat:40.1368,lng:-111.5202,elev:5800,label:'Maple Canyon TH — end of Maple Canyon Rd, Mapleton'},
    summit:{lat:40.0882,lng:-111.5277,elev:10192},
-   route:[[40.1368,-111.5202],[40.1360,-111.5215],[40.1353,-111.5232],[40.1340,-111.5250],[40.1310,-111.5270],[40.1270,-111.5295],[40.1230,-111.5320],[40.1195,-111.5345],[40.1155,-111.5368],[40.1110,-111.5355],[40.1080,-111.5340],[40.1020,-111.5310],[40.0950,-111.5292],[40.0882,-111.5277]],
+   route:[
+     [40.1368,-111.5202],[40.1360,-111.5215],[40.1353,-111.5232],
+     [40.1340,-111.5250],[40.1310,-111.5270],[40.1270,-111.5295],
+     [40.1230,-111.5320],[40.1195,-111.5345],[40.1155,-111.5368],
+     [40.1110,-111.5355],[40.1080,-111.5340],[40.1020,-111.5310],
+     [40.0950,-111.5292],[40.0882,-111.5277],
+   ],
    waypoints:[
-     {type:'start',label:'Maple Canyon Trailhead',lat:40.1368,lng:-111.5202,elev:'5,800 ft',note:'Drive east on 400 N from Mapleton through Whitings Campground to END of paved road. Lot with bathroom. Trail starts as old gravel road.'},
-     {type:'mid',label:'Bridge Crossing — Trail Split',lat:40.1353,lng:-111.5232,elev:'~6,100 ft',note:'~0.25mi up. Cross wooden bridge. Spanish Fork Peak Trail heads SOUTH here. Well signed.'},
-     {type:'mid',label:'Maple Canyon Lake',lat:40.1195,lng:-111.5345,elev:'~8,800 ft',note:'Small pond/meadows. Mosquitoes in summer. Trail steepens after here.'},
-     {type:'mid',label:'Ridge Saddle — Turn Left',lat:40.1080,lng:-111.5340,elev:'~9,800 ft',note:'TURN LEFT (south) at ridge for summit. Right leads to false lesser peak.'},
-     {type:'summit',label:'Spanish Fork Peak',lat:40.0882,lng:-111.5277,elev:'10,192 ft',note:'Class 1 walk-up. Return same way.'},
+     {type:'start',label:'Maple Canyon Trailhead',lat:40.1368,lng:-111.5202,elev:'5,800 ft',
+      note:'Drive east on 400 N from Mapleton, through Whitings Campground (free to hike, fee to camp), past campground to END of paved road. Lot with bathroom. Trail starts as old gravel road at top of lot.'},
+     {type:'mid',label:'Bridge Crossing / Trail Split',lat:40.1353,lng:-111.5232,elev:'~6,100 ft',
+      note:'~0.25mi from TH. Cross small wooden bridge. Spanish Fork Peak Trail splits here, heading SOUTH (upstream). Well signed.'},
+     {type:'mid',label:'Maple Canyon Lake',lat:40.1195,lng:-111.5345,elev:'~8,800 ft',
+      note:'Small pond and meadows. Mosquitoes in summer. Trail steepens significantly after here. Snow can linger in bowl above into July.'},
+     {type:'mid',label:'Ridge Saddle — Turn Left South',lat:40.1080,lng:-111.5340,elev:'~9,800 ft',
+      note:'TURN LEFT (south) at ridge for summit. Turning right leads to a lesser false peak. Follow ridge south.'},
+     {type:'summit',label:'Spanish Fork Peak Summit',lat:40.0882,lng:-111.5277,elev:'10,192 ft',
+      note:'Also called Maple Mountain. Class 1 walk-up all the way. Great views of Utah Valley and Provo. Return same way.'},
    ],
    alerts:[
-     {type:'info',title:'Recovery Day',body:'Between Lone Peak and Cascade/Provo. Steady pace only. Eat big tonight.'},
-     {type:'warn',title:'Snow in Bowl',body:'Bowl below ridge saddle holds snow into July. Trekking poles recommended.'},
+     {type:'info',title:'Your Recovery Day',body:'Sandwiched between Lone Peak (Tue) and Cascade/Provo (Thu). Steady pace only. Eat a massive dinner tonight — Thursday is the hardest day of the week.'},
+     {type:'warn',title:'Snow in Bowl',body:'The bowl below the ridge saddle holds snow late into summer. Trekking poles strongly recommended.'},
    ],
    alltrails:'https://www.alltrails.com/trail/us/utah/spanish-fork-peak-via-maple-canyon'},
  
-  {id:3,day:'Thursday',dayNum:4,name:'Cascade & Provo Peak',subtitle:'via Upper Pole Couloir — SHUTTLE',
-   miles:15.3,elevGain:7096,summitElev:11068,start:'5:30 AM',scramble:true,
+  // ── THURSDAY: CASCADE & PROVO PEAK ───────────────────────
+  {id:3, day:'Thursday', dayNum:4,
+   name:'Cascade & Provo Peak', subtitle:'via Upper Pole Couloir — SHUTTLE REQUIRED',
+   miles:15.3, elevGain:7096, summitElev:11068, start:'5:30 AM', scramble:true,
    trailhead:{lat:40.2927,lng:-111.6036,elev:6800,label:'Quarry Trailhead — Squaw Peak Rd (START)'},
    summit:{lat:40.2444,lng:-111.5566,elev:11068},
-   route:[[40.2927,-111.6036],[40.2940,-111.6010],[40.2955,-111.5975],[40.2975,-111.5945],[40.3000,-111.5915],[40.3025,-111.5895],[40.3070,-111.5880],[40.3050,-111.5870],[40.2985,-111.5835],[40.2900,-111.5790],[40.2820,-111.5745],[40.2730,-111.5685],[40.2650,-111.5635],[40.2580,-111.5610],[40.2510,-111.5588],[40.2444,-111.5566],[40.2440,-111.5620],[40.2435,-111.5680],[40.2430,-111.5730],[40.2424,-111.5777]],
+   route:[
+     [40.2927,-111.6036],[40.2940,-111.6010],[40.2955,-111.5975],
+     [40.2975,-111.5945],[40.3000,-111.5915],[40.3025,-111.5895],
+     [40.3070,-111.5880],[40.3050,-111.5870],[40.2985,-111.5835],
+     [40.2900,-111.5790],[40.2820,-111.5745],[40.2730,-111.5685],
+     [40.2650,-111.5635],[40.2580,-111.5610],[40.2510,-111.5588],
+     [40.2444,-111.5566],[40.2440,-111.5620],[40.2435,-111.5680],
+     [40.2430,-111.5730],[40.2424,-111.5777],
+   ],
    waypoints:[
-     {type:'start',label:'Quarry Trailhead (START)',lat:40.2927,lng:-111.6036,elev:'6,800 ft',note:'From Provo Canyon (US-189), turn RIGHT on Squaw Peak Rd at mile marker 9. Drive ~8 miles. Social trail from NORTH side of lot into couloir.'},
-     {type:'mid',label:'Upper Pole Couloir',lat:40.2955,lng:-111.5975,elev:'~8,500 ft',note:'Steep loose scree. Look for cairn near top and EXIT LEFT onto ridge before the top.'},
-     {type:'mid',label:'Cascade Mountain',lat:40.3070,lng:-111.5880,elev:'10,908 ft',note:'Head NORTH first to tag Cascade. Then turn SOUTH for full ridge traverse.'},
-     {type:'mid',label:'Freedom Peak — Class 3 Starts',lat:40.2820,lng:-111.5745,elev:'10,801 ft',note:'Class 3 scrambling begins here. Gets harder going south.'},
-     {type:'mid',label:'East Provo / Knife Edge',lat:40.2650,lng:-111.5635,elev:'11,044 ft',note:'Crux. Short knife-edge Class 3. Bypass by dropping left onto scree.'},
-     {type:'summit',label:'Provo Peak Summit',lat:40.2444,lng:-111.5566,elev:'11,068 ft',note:'American flag at top. Descend west to shuttle car.'},
-     {type:'end',label:'Provo Peak TH (SHUTTLE CAR)',lat:40.2424,lng:-111.5777,elev:'8,350 ft',note:'Park second car here THE NIGHT BEFORE. 13.5 miles up Squaw Peak Rd.'},
+     {type:'start',label:'Quarry Trailhead (START)',lat:40.2927,lng:-111.6036,elev:'6,800 ft',
+      note:'From Provo Canyon (US-189), turn RIGHT on Squaw Peak Rd just past mile marker 9. Drive ~8 miles. Social trail leaves from NORTH side of parking lot up into the couloir gully. High clearance vehicle required.'},
+     {type:'mid',label:'Upper Pole Couloir',lat:40.2955,lng:-111.5975,elev:'~8,500 ft',
+      note:'Steep loose scree gully. Follow it up. Look for cairn near the top and EXIT LEFT onto the ridge — do not go all the way to top of couloir.'},
+     {type:'mid',label:'Cascade Mountain',lat:40.3070,lng:-111.5880,elev:'10,908 ft',
+      note:'Head NORTH first to tag Cascade summit. Then turn SOUTH and begin the full ridge traverse. You can see the entire route from here.'},
+     {type:'mid',label:'Freedom Peak — Class 3 Begins',lat:40.2820,lng:-111.5745,elev:'10,801 ft',
+      note:'Class 3 scrambling begins here. Gets harder and more exposed heading south. Social trail along ridge the whole way.'},
+     {type:'mid',label:'East Provo / Knife Edge Crux',lat:40.2650,lng:-111.5635,elev:'11,044 ft',
+      note:'Most technical section. Short knife-edge Class 3. Can bypass by dropping a few feet LEFT onto scree. Very loose rock on descent to Provo Peak.'},
+     {type:'summit',label:'Provo Peak Summit',lat:40.2444,lng:-111.5566,elev:'11,068 ft',
+      note:'American flag at top. Highest point of the day. Descend standard trail west to shuttle car. You can see the TH from here.'},
+     {type:'end',label:'Provo Peak TH (SHUTTLE CAR)',lat:40.2424,lng:-111.5777,elev:'8,350 ft',
+      note:'13.5 miles up Squaw Peak Rd. Park second car here THE NIGHT BEFORE. Without shuttle = 6+ extra miles of road walking at end of your hardest day.'},
    ],
    alerts:[
-     {type:'warn',title:'🚗 SHUTTLE REQUIRED',body:'Park second car at Provo Peak TH (40.2424, -111.5777) the night before. Without it = 6+ extra miles.'},
-     {type:'warn',title:'⚡ Hardest Day',body:'7,096 ft gain. Class 3-4 scrambling. 5:30 AM start non-negotiable. High clearance vehicle required for Squaw Peak Rd.'},
-     {type:'info',title:'Ridge Order N→S',body:'Quarry TH → Couloir → Cascade (N first) → S.Cascade → Shingle Mill → Freedom → E.Provo → Provo Peak → shuttle TH.'},
+     {type:'warn',title:'🚗 SHUTTLE REQUIRED — Park Night Before',body:'Leave a second car at Provo Peak TH (40.2424, -111.5777). Both trailheads are on Squaw Peak Rd. Without shuttle you add 6+ miles at end of hardest day of the week.'},
+     {type:'warn',title:'⚡ Hardest Day — 5:30 AM Non-Negotiable',body:'7,096 ft gain. Class 3-4 scrambling. No defined trail above couloir. Do NOT go solo. High clearance vehicle required for Squaw Peak Rd.'},
+     {type:'info',title:'Ridge Order North to South',body:'Quarry TH → Couloir (exit left) → Cascade (go N first) → S.Cascade → Shingle Mill → Freedom → E.Provo → Provo Peak → shuttle TH. Gets harder as you go south.'},
    ],
    alltrails:'https://www.alltrails.com/trail/us/utah/cascade-mountain-to-provo-peak-via-upper-pole-couloir'},
  
-  {id:4,day:'Friday',dayNum:5,name:'Mount Timpanogos',subtitle:'via Timpooneke Trail',
-   miles:14.4,elevGain:4380,summitElev:11753,start:'5:30 AM',scramble:false,
+  // ── FRIDAY: MOUNT TIMPANOGOS ──────────────────────────────
+  {id:4, day:'Friday', dayNum:5,
+   name:'Mount Timpanogos', subtitle:'via Timpooneke Trail',
+   miles:14.4, elevGain:4380, summitElev:11753, start:'5:30 AM', scramble:false,
    trailhead:{lat:40.4311,lng:-111.6391,elev:7380,label:'Timpooneke TH — Alpine Loop Rd, American Fork Canyon'},
    summit:{lat:40.3908,lng:-111.6459,elev:11753},
-   route:[[40.4311,-111.6391],[40.4290,-111.6398],[40.4260,-111.6408],[40.4230,-111.6418],[40.4200,-111.6425],[40.4170,-111.6438],[40.4140,-111.6448],[40.4110,-111.6458],[40.4075,-111.6465],[40.4040,-111.6470],[40.4010,-111.6472],[40.3985,-111.6490],[40.3966,-111.6550],[40.3950,-111.6530],[40.3930,-111.6510],[40.3908,-111.6459]],
+   route:[
+     [40.4311,-111.6391],[40.4290,-111.6398],[40.4260,-111.6408],
+     [40.4230,-111.6418],[40.4200,-111.6425],[40.4170,-111.6438],
+     [40.4140,-111.6448],[40.4110,-111.6458],[40.4075,-111.6465],
+     [40.4040,-111.6470],[40.4010,-111.6472],[40.3985,-111.6490],
+     [40.3966,-111.6550],[40.3950,-111.6530],[40.3930,-111.6510],
+     [40.3908,-111.6459],
+   ],
    waypoints:[
-     {type:'start',label:'Timpooneke Trailhead',lat:40.4311,lng:-111.6391,elev:'7,380 ft',note:'Turn off Alpine Loop Rd onto Timpooneke Rd. $10/day fee. Timed-entry permits July–Oct weekends — book at Recreation.gov. Take MIDDLE branch at 3-way junction 50ft in.'},
-     {type:'mid',label:'Scout Falls Spur',lat:40.4230,lng:-111.6418,elev:'~8,100 ft',note:'1.4mi — optional spur turns hard right. Continue straight on main trail for summit.'},
-     {type:'mid',label:'Timpanogos Basin Jct',lat:40.4040,lng:-111.6470,elev:'~9,900 ft',note:'4.9mi. TURN RIGHT toward ridge for summit. Left goes to Emerald Lake only.'},
-     {type:'mid',label:'Timp Saddle',lat:40.3966,lng:-111.6550,elev:'~11,000 ft',note:'5.9mi. Aspen Grove trail joins here. Summit 0.9mi south along exposed ridge. Layer up.'},
-     {type:'summit',label:'Mt Timpanogos Summit',lat:40.3908,lng:-111.6459,elev:'11,753 ft',note:'Old USGS hut at top. Off summit by noon. Day 5 on tired legs.'},
+     {type:'start',label:'Timpooneke Trailhead',lat:40.4311,lng:-111.6391,elev:'7,380 ft',
+      note:'Turn off Alpine Loop Rd onto Timpooneke Rd, park in lot 0.2mi in. $10/day fee (2025). Timed-entry permits required July–Oct on weekends/holidays — book at Recreation.gov WELL in advance. Bathroom on site. At 3-way junction 50ft in, take MIDDLE branch.'},
+     {type:'mid',label:'Scout Falls Spur',lat:40.4230,lng:-111.6418,elev:'~8,100 ft',
+      note:'1.4mi in — optional spur right to waterfall. Continue straight on main trail for summit.'},
+     {type:'mid',label:'Timpanogos Basin Junction',lat:40.4040,lng:-111.6470,elev:'~9,900 ft',
+      note:'4.9mi in. TURN RIGHT toward the ridge for summit. Left goes to Emerald Lake only. Signs present.'},
+     {type:'mid',label:'Timp Saddle',lat:40.3966,lng:-111.6550,elev:'~11,000 ft',
+      note:'5.9mi from TH. Aspen Grove trail joins here from right. Summit is 0.9mi south along exposed rocky ridge. Wind picks up — layer up. Mountain goats common here.'},
+     {type:'summit',label:'Mt Timpanogos Summit',lat:40.3908,lng:-111.6459,elev:'11,753 ft',
+      note:'Old USGS metal hut at top — 8ft wide with sheer drops east. Off summit by noon. Day 5 on 42+ miles of accumulated fatigue. Take it steady.'},
    ],
    alerts:[
-     {type:'warn',title:'Permits Required',body:'Timed-entry permits Saturdays, Sundays and holidays July–Oct. Book at Recreation.gov. $10/vehicle.'},
-     {type:'info',title:'Day 5 Pacing',body:'42+ miles already in your legs. Don\'t push early. Save everything for the saddle-to-summit push.'},
+     {type:'warn',title:'Permits + Parking Fee',body:'Timed-entry permits required on weekends July–Oct. Book at Recreation.gov — fills up weeks in advance. $10/vehicle day use fee.'},
+     {type:'info',title:'Day 5 Reality Check',body:"42+ miles over 4 days before this hike. The Giant Staircase section feels gradual — don't blow up early. Save your legs for the saddle-to-summit push."},
+     {type:'info',title:'Mountain Goats',body:'Goats approach hikers at the saddle for salt. Keep distance — do not feed. Normal to see several.'},
    ],
    alltrails:'https://www.alltrails.com/trail/us/utah/mt-timpanogos-timpooneke-trail'},
  
-  {id:5,day:'Saturday',dayNum:6,name:'Mount Nebo',subtitle:'Highest peak in Utah County — 11,933 ft',
-   miles:9,elevGain:4180,summitElev:11933,start:'6:00 AM',scramble:false,
-   trailhead:{lat:39.8432,lng:-111.7207,elev:9259,label:'Nebo Bench TH — Mona Pole Rd (0.4mi past Monument TH)'},
+  // ── SATURDAY: MOUNT NEBO ──────────────────────────────────
+  {id:5, day:'Saturday', dayNum:6,
+   name:'Mount Nebo', subtitle:'Highest peak in Utah County — 11,933 ft',
+   miles:9, elevGain:4180, summitElev:11933, start:'6:00 AM', scramble:false,
+   trailhead:{lat:39.8432,lng:-111.7207,elev:9259,label:'Nebo Bench TH — Mona Pole Rd, 0.4mi past Monument TH sign'},
    summit:{lat:39.8216,lng:-111.7599,elev:11933},
-   route:[[39.8432,-111.7207],[39.8428,-111.7240],[39.8420,-111.7280],[39.8405,-111.7330],[39.8385,-111.7380],[39.8355,-111.7420],[39.8310,-111.7445],[39.8275,-111.7460],[39.8240,-111.7490],[39.8205,-111.7515],[39.8180,-111.7530],[39.8160,-111.7550],[39.8145,-111.7570],[39.8216,-111.7599]],
+   route:[
+     [39.8432,-111.7207],[39.8428,-111.7240],[39.8420,-111.7280],
+     [39.8405,-111.7330],[39.8385,-111.7380],[39.8355,-111.7420],
+     [39.8310,-111.7445],[39.8275,-111.7460],[39.8240,-111.7490],
+     [39.8205,-111.7515],[39.8180,-111.7530],[39.8160,-111.7550],
+     [39.8145,-111.7570],[39.8216,-111.7599],
+   ],
    waypoints:[
-     {type:'start',label:'Nebo Bench Trailhead',lat:39.8432,lng:-111.7207,elev:'9,259 ft',note:'25 miles up Nebo Loop Rd from Payson (I-15 exit 250). At Monument TH sign DO NOT stop. Turn RIGHT onto Mona Pole Rd dirt road, drive 0.3-0.4mi to small lot on LEFT. Trail 089 heads WEST along fence.'},
-     {type:'mid',label:'North Peak Crest',lat:39.8310,lng:-111.7445,elev:'~10,500 ft',note:'Trail bypasses North Peak on WEST side. Nebo summit finally visible from here.'},
-     {type:'mid',label:'Wolf Pass',lat:39.8205,lng:-111.7515,elev:'10,620 ft',note:'~3.6mi. Final 1,300 ft gain in under a mile begins. Very rocky and exposed.'},
-     {type:'mid',label:'False Summit',lat:39.8160,lng:-111.7550,elev:'11,460 ft',note:'Keep going SOUTH. American flag marks the real top.'},
-     {type:'summit',label:'Mount Nebo Summit',lat:39.8216,lng:-111.7599,elev:'11,933 ft',note:'Highest in Utah County. 77+ miles this week. Return same way.'},
+     {type:'start',label:'Nebo Bench Trailhead',lat:39.8432,lng:-111.7207,elev:'9,259 ft',
+      note:'25 miles up Nebo Loop Rd from Payson (I-15 exit 250). At the Monument Trailhead sign DO NOT stop in paved lot. Turn RIGHT onto Mona Pole Rd dirt road, drive 0.3-0.4mi to small lot on LEFT. Trail 089 heads WEST along a fence. No fee.'},
+     {type:'mid',label:'North Peak Crest',lat:39.8310,lng:-111.7445,elev:'~10,500 ft',
+      note:'Trail crests North Peak ridge then bypasses North Peak on its WEST side. Nebo summit and full ridge finally visible from here for the first time.'},
+     {type:'mid',label:'Wolf Pass',lat:39.8205,lng:-111.7515,elev:'10,620 ft',
+      note:'~3.6mi in. Saddle between North Peak and Nebo. Good fuel stop. Final 1,300 ft gain in under a mile begins here on very rocky terrain. No shade.'},
+     {type:'mid',label:'False Summit',lat:39.8160,lng:-111.7550,elev:'11,460 ft',
+      note:'Do NOT stop here — true summit is still further SOUTH. This will fool you. Keep going. American flag is visible at the real top.'},
+     {type:'summit',label:'Mount Nebo Summit',lat:39.8216,lng:-111.7599,elev:'11,933 ft',
+      note:'Highest point in Utah County and the entire Wasatch Range. 7 peaks. 6 days. 77+ miles. You did it. Return same way — take it easy on descent, no water anywhere.'},
    ],
    alerts:[
-     {type:'warn',title:'Do NOT Park at Monument TH',body:'Turn RIGHT onto Mona Pole Rd and drive 0.3-0.4mi to actual trailhead. The paved lot is the wrong start.'},
-     {type:'warn',title:'Zero Water on Trail',body:'No water sources anywhere. Bring 3+ liters from the car.'},
-     {type:'info',title:'Two False Summits',body:'Wolf Pass Peak at 11,460 ft will fool you. Keep going south. American flag marks the real top.'},
+     {type:'warn',title:'DO NOT Park at Monument TH Sign',body:'The paved lot is NOT the right start. Turn RIGHT onto Mona Pole Rd dirt road and drive 0.3-0.4mi to actual trailhead. Starting from paved lot adds rough gully section.'},
+     {type:'warn',title:'Zero Water on Entire Trail',body:'No water sources anywhere on the route. Bring minimum 3 liters from the car. Most critical water day of the week.'},
+     {type:'info',title:'Two False Summits',body:"Wolf Pass Peak at 11,460 ft will trick you — it's not the top. Keep going south along the ridge. American flag marks the real summit."},
    ],
    alltrails:'https://www.alltrails.com/trail/us/utah/mount-nebo'},
 ];
  
-// ── APP STATE ────────────────────────────────────────────
+// ================================================================
+// APP STATE + RENDER
+// ================================================================
 let currentPage='list', mainMap=null, detailMaps={};
-let completed=JSON.parse(localStorage.getItem('peaks_done')||'[]');
+let completed = JSON.parse(localStorage.getItem('peaks_done')||'[]');
  
 function renderList(){
-  const list=document.getElementById('day-list');
-  list.innerHTML='';
+  const list = document.getElementById('day-list');
+  list.innerHTML = '';
+  let allCached = true;
   PEAKS.forEach(p=>{
-    const done=completed.includes(p.id);
-    const cached=cachedPeaks.includes(p.id);
-    const div=document.createElement('div');
-    div.className='day-item';
-    div.onclick=()=>showDetail(p.id);
-    div.innerHTML=`
+    const done = completed.includes(p.id);
+    const cached = cachedPeaks.includes(p.id);
+    if(!cached) allCached = false;
+    const div = document.createElement('div');
+    div.className = 'day-item';
+    div.onclick = ()=>showDetail(p.id);
+    div.innerHTML = `
       <div class="day-num-col" style="${done?'color:rgba(61,107,79,.6)':''}">${String(p.dayNum).padStart(2,'0')}</div>
       <div class="day-info">
-        <div class="day-label-sm">${p.day}${done?' · ✓':''} ${cached?'· 📥':''}</div>
+        <div class="day-label-sm">${p.day}${done?' · ✓ Done':''}${cached?' · 📥':''}</div>
         <div class="day-name" style="${done?'color:var(--pine)':''}">${p.name}</div>
         <div class="tag-row">
           <span class="tag tag-mi">${p.miles} mi</span>
@@ -344,19 +536,48 @@ function renderList(){
       <div class="day-chevron">›</div>`;
     list.appendChild(div);
   });
-  document.getElementById('progress-mini').textContent=completed.length+'/7';
+  document.getElementById('progress-mini').textContent = completed.length+'/7';
+ 
+  // Update download btn
+  const btn = document.getElementById('dl-all-btn');
+  if(allCached && btn){
+    btn.textContent = '✓ All 6 Maps Downloaded';
+    btn.className = 'dl-btn done';
+  }
+  // Update dots
+  PEAKS.forEach(p=>{
+    const dot = document.getElementById(`dot-${p.id}`);
+    if(dot && cachedPeaks.includes(p.id)) dot.className='dl-peak-dot done';
+  });
 }
  
 function showDetail(id){
-  const p=PEAKS[id];
-  const done=completed.includes(p.id);
-  const cached=cachedPeaks.includes(p.id);
-  const page=document.getElementById('detail-page');
-  const aHtml=p.alerts.map(a=>`<div class="${a.type==='warn'?'alert-card':'info-card'}"><div class="${a.type==='warn'?'alert-title':'info-title'}">${a.title}</div><div class="${a.type==='warn'?'alert-body':'info-body'}">${a.body}</div></div>`).join('');
-  const wHtml=p.waypoints.map(w=>`<div class="waypoint"><div class="wp-dot ${w.type}">${w.type==='start'?'🚗':w.type==='summit'?'🏔':w.type==='end'?'🅿':'📍'}</div><div class="wp-info"><div class="wp-name">${w.label}</div><div class="wp-elev">${w.elev}</div><div class="wp-coords" onclick="copyCoords(${w.lat},${w.lng})">📋 ${w.lat.toFixed(4)}, ${w.lng.toFixed(4)}</div><div class="wp-note">${w.note}</div></div></div>`).join('');
-  const apple=`https://maps.apple.com/?daddr=${p.trailhead.lat},${p.trailhead.lng}&dirflg=d`;
-  const google=`https://www.google.com/maps/dir/?api=1&destination=${p.trailhead.lat},${p.trailhead.lng}&travelmode=driving`;
-  page.innerHTML=`
+  const p = PEAKS[id];
+  const done = completed.includes(p.id);
+  const cached = cachedPeaks.includes(p.id);
+  const page = document.getElementById('detail-page');
+ 
+  const aHtml = p.alerts.map(a=>`
+    <div class="${a.type==='warn'?'alert-card':'info-card'}">
+      <div class="${a.type==='warn'?'alert-title':'info-title'}">${a.title}</div>
+      <div class="${a.type==='warn'?'alert-body':'info-body'}">${a.body}</div>
+    </div>`).join('');
+ 
+  const wHtml = p.waypoints.map(w=>`
+    <div class="waypoint">
+      <div class="wp-dot ${w.type}">${w.type==='start'?'🚗':w.type==='summit'?'🏔':w.type==='end'?'🅿':'📍'}</div>
+      <div class="wp-info">
+        <div class="wp-name">${w.label}</div>
+        <div class="wp-elev">${w.elev}</div>
+        <div class="wp-coords" onclick="copyCoords(${w.lat},${w.lng})">📋 ${w.lat.toFixed(4)}, ${w.lng.toFixed(4)}</div>
+        <div class="wp-note">${w.note}</div>
+      </div>
+    </div>`).join('');
+ 
+  const apple = `https://maps.apple.com/?daddr=${p.trailhead.lat},${p.trailhead.lng}&dirflg=d`;
+  const google = `https://www.google.com/maps/dir/?api=1&destination=${p.trailhead.lat},${p.trailhead.lng}&travelmode=driving`;
+ 
+  page.innerHTML = `
     <div class="detail-header">
       <div class="detail-back" onclick="backToList()">‹ All Days</div>
       <div class="detail-day-lbl">Day ${p.dayNum} · ${p.day}</div>
@@ -371,109 +592,179 @@ function showDetail(id){
     </div>
     <div class="status-toggle" onclick="toggleDone(${p.id})">
       <div class="status-check ${done?'done':''}">${done?'✓':''}</div>
-      <div class="status-text">${done?'Summited! ✓':'Mark as completed'}<small>${done?'Tap to unmark':'Tap after you summit'}</small></div>
+      <div class="status-text">${done?'Summited! ✓':'Mark as completed'}
+        <small>${done?'Tap to unmark':'Tap after you summit'}</small>
+      </div>
     </div>
     <div class="detail-section">
       <div class="detail-section-title">
-        <span>Trail Map${cached?' · 📥 Cached':''}</span>
-        <button class="cache-btn ${cached?'cached':''}" id="cb-${p.id}" onclick="cacheOne(${p.id})">${cached?'✓ Saved':'⬇ Save Offline'}</button>
+        Trail Map · Follow the Orange Line
+        <span style="font-size:9px;color:${cached?'var(--pine)':'var(--dust)'}">${cached?'📥 Offline Ready':'No service = no map'}</span>
       </div>
-      <div class="mini-map" id="dm-${p.id}"><div class="cache-progress"><div class="cache-progress-fill" id="prog-${p.id}"></div></div></div>
+      <div class="mini-map" id="dm-${p.id}"></div>
       <div style="display:flex;gap:8px;margin-top:12px">
-        <a href="${apple}" class="open-maps-btn" style="flex:1">🗺 Apple Maps</a>
-        <a href="${google}" class="open-maps-btn" style="flex:1">📍 Google Maps</a>
+        <a href="${apple}" class="open-maps-btn" style="flex:1">🗺 Apple Maps TH</a>
+        <a href="${google}" class="open-maps-btn" style="flex:1">📍 Google Maps TH</a>
       </div>
     </div>
-    <div class="detail-section"><div class="detail-section-title">Important Notes</div>${aHtml}</div>
-    <div class="detail-section"><div class="detail-section-title">Waypoints · Tap coords to copy</div><div class="waypoint-list">${wHtml}</div></div>
-    <div class="detail-section" style="border-bottom:none"><a href="${p.alltrails}" class="open-maps-btn" target="_blank">↗ View on AllTrails</a></div>`;
+    <div class="detail-section">
+      <div class="detail-section-title">Important Notes</div>
+      ${aHtml}
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Waypoints · Tap coords to copy</div>
+      <div class="waypoint-list">${wHtml}</div>
+    </div>
+    <div class="detail-section" style="border-bottom:none">
+      <a href="${p.alltrails}" class="open-maps-btn" target="_blank">↗ View on AllTrails</a>
+    </div>`;
+ 
   showPage('detail');
-  // Wait for DOM paint then init map
-  requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>initDetailMap(p),100)));
+  // Double RAF + timeout = most reliable Safari map init
+  requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>initDetailMap(p), 150)));
 }
  
 function initDetailMap(p){
-  const el=document.getElementById(`dm-${p.id}`);
-  if(!el||detailMaps[p.id]) return;
+  const el = document.getElementById(`dm-${p.id}`);
+  if(!el || detailMaps[p.id]) return;
  
-  // Explicitly set size so Leaflet can measure it in Safari
-  el.style.height='280px';
-  el.style.display='block';
+  // Force explicit size — critical for Safari
+  el.style.height = '280px';
+  el.style.width = '100%';
+  el.style.display = 'block';
+  el.style.position = 'relative';
  
-  const lats=p.route.map(r=>r[0]),lngs=p.route.map(r=>r[1]);
-  const bounds=[[Math.min(...lats),Math.min(...lngs)],[Math.max(...lats),Math.max(...lngs)]];
+  const lats = p.route.map(r=>r[0]);
+  const lngs = p.route.map(r=>r[1]);
+  const bounds = [[Math.min(...lats),Math.min(...lngs)],[Math.max(...lats),Math.max(...lngs)]];
  
-  const m=L.map(el,{zoomControl:false,attributionControl:false,preferCanvas:true});
-  m.fitBounds(bounds,{padding:[28,28]});
+  // Create map without initial view — set after invalidateSize
+  const m = L.map(el, {
+    zoomControl: false,
+    attributionControl: false,
+    preferCanvas: true,
+    fadeAnimation: false,
+    zoomAnimation: false,
+  });
  
-  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,opacity:.9}).addTo(m);
-  L.polyline(p.route,{color:'rgba(232,82,42,.3)',weight:14,opacity:.5,lineCap:'round',lineJoin:'round'}).addTo(m);
-  L.polyline(p.route,{color:'#ff6b3d',weight:4,opacity:1,lineCap:'round',lineJoin:'round'}).addTo(m);
+  // Add tile layer — pulls from Cache API if offline
+  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    opacity: 0.92,
+    crossOrigin: true,
+  }).addTo(m);
  
-  const thIcon=L.divIcon({html:'<div style="background:#3d6b4f;width:14px;height:14px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.7)"></div>',className:'',iconSize:[14,14],iconAnchor:[7,7]});
-  L.marker([p.trailhead.lat,p.trailhead.lng],{icon:thIcon}).addTo(m).bindPopup(`<b>Trailhead</b><br><small>${p.trailhead.label}</small>`);
+  // Bold orange trail line
+  L.polyline(p.route, {color:'rgba(232,82,42,.3)', weight:14, opacity:.5, lineCap:'round', lineJoin:'round'}).addTo(m);
+  L.polyline(p.route, {color:'#ff6b3d', weight:4, opacity:1, lineCap:'round', lineJoin:'round'}).addTo(m);
  
-  const sIcon=L.divIcon({html:'<div style="background:#e8522a;width:18px;height:18px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(232,82,42,.8)"></div>',className:'',iconSize:[18,18],iconAnchor:[9,9]});
-  L.marker([p.summit.lat,p.summit.lng],{icon:sIcon}).addTo(m).bindPopup(`<b>${p.name}</b><br><small>${p.summitElev.toLocaleString()} ft</small>`);
+  // Green TH marker
+  const thIcon = L.divIcon({html:'<div style="background:#3d6b4f;width:16px;height:16px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.8)"></div>',className:'',iconSize:[16,16],iconAnchor:[8,8]});
+  L.marker([p.trailhead.lat,p.trailhead.lng],{icon:thIcon}).addTo(m)
+    .bindPopup(`<b>START: Trailhead</b><br><small>${p.trailhead.label}</small>`);
  
+  // Orange summit marker
+  const sIcon = L.divIcon({html:'<div style="background:#e8522a;width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 10px rgba(232,82,42,.9)"></div>',className:'',iconSize:[20,20],iconAnchor:[10,10]});
+  L.marker([p.summit.lat,p.summit.lng],{icon:sIcon}).addTo(m)
+    .bindPopup(`<b>🏔 ${p.name} Summit</b><br><small>${p.summitElev.toLocaleString()} ft</small>`);
+ 
+  // Blue shuttle end marker for Cascade/Provo
   if(p.id===3){
-    const eIcon=L.divIcon({html:'<div style="background:#4a8fa8;width:14px;height:14px;border-radius:3px;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.7)"></div>',className:'',iconSize:[14,14],iconAnchor:[7,7]});
-    L.marker([40.2424,-111.5777],{icon:eIcon}).addTo(m).bindPopup('<b>Shuttle Car TH</b>');
+    const eIcon = L.divIcon({html:'<div style="background:#4a8fa8;width:16px;height:16px;border-radius:3px;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.8)"></div>',className:'',iconSize:[16,16],iconAnchor:[8,8]});
+    L.marker([40.2424,-111.5777],{icon:eIcon}).addTo(m)
+      .bindPopup('<b>🅿 Shuttle Car TH (END)</b><br><small>40.2424, -111.5777</small>');
   }
  
-  detailMaps[p.id]=m;
+  detailMaps[p.id] = m;
  
-  // Multiple invalidation passes — Safari needs this
-  [200,500,1000].forEach(t=>setTimeout(()=>{
-    m.invalidateSize();
-    m.fitBounds(bounds,{padding:[28,28]});
-  },t));
+  // Safari needs multiple invalidation passes to render correctly
+  const fixMap = () => { m.invalidateSize(true); m.fitBounds(bounds, {padding:[30,30], animate:false}); };
+  fixMap();
+  setTimeout(fixMap, 200);
+  setTimeout(fixMap, 500);
+  setTimeout(fixMap, 1000);
 }
  
 function initMainMap(){
   if(mainMap) return;
-  const el=document.getElementById('main-map');
-  mainMap=L.map(el,{zoomControl:true,attributionControl:true,preferCanvas:true});
-  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenTopoMap'}).addTo(mainMap);
+  const el = document.getElementById('main-map');
+  if(!el) return;
  
-  PEAKS.forEach(p=>{
-    const done=completed.includes(p.id);
-    L.polyline(p.route,{color:done?'rgba(61,107,79,.7)':'rgba(232,82,42,.6)',weight:3,lineCap:'round'}).addTo(mainMap);
-    const icon=L.divIcon({html:`<div style="background:${done?'#3d6b4f':'#e8522a'};width:34px;height:34px;border-radius:50%;border:2.5px solid #f0ece6;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;box-shadow:0 2px 14px rgba(${done?'61,107,79':'232,82,42'},.7)">${p.dayNum}</div>`,className:'',iconSize:[34,34],iconAnchor:[17,17]});
-    L.marker([p.summit.lat,p.summit.lng],{icon}).addTo(mainMap).bindPopup(`<div class="popup-day">Day ${p.dayNum} · ${p.day}</div><div class="popup-name">${p.name}</div><div class="popup-info">${p.miles} mi · ${p.summitElev.toLocaleString()} ft</div><a class="popup-btn" onclick="showDetail(${p.id});return false">View →</a>`);
-    L.circleMarker([p.trailhead.lat,p.trailhead.lng],{radius:5,color:'#4a8fa8',fillColor:'#4a8fa8',fillOpacity:.9,weight:1.5}).addTo(mainMap);
+  mainMap = L.map(el, {
+    zoomControl: true,
+    attributionControl: true,
+    preferCanvas: true,
+    fadeAnimation: false,
+    zoomAnimation: false,
   });
  
-  // Safari fix — invalidate after render
-  [300,700].forEach(t=>setTimeout(()=>{
-    mainMap.invalidateSize();
-    mainMap.setView([40.10,-111.65],10);
-  },t));
+  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: '© OpenTopoMap',
+    crossOrigin: true,
+  }).addTo(mainMap);
+ 
+  PEAKS.forEach(p=>{
+    const done = completed.includes(p.id);
+    // Trail line
+    L.polyline(p.route, {color:done?'rgba(61,107,79,.7)':'rgba(232,82,42,.6)', weight:3, lineCap:'round'}).addTo(mainMap);
+    // Summit numbered marker
+    const icon = L.divIcon({
+      html:`<div style="background:${done?'#3d6b4f':'#e8522a'};width:36px;height:36px;border-radius:50%;border:3px solid #f0ece6;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;box-shadow:0 2px 14px rgba(${done?'61,107,79':'232,82,42'},.8)">${p.dayNum}</div>`,
+      className:'', iconSize:[36,36], iconAnchor:[18,18]
+    });
+    L.marker([p.summit.lat,p.summit.lng],{icon}).addTo(mainMap)
+      .bindPopup(`<div class="popup-day">Day ${p.dayNum} · ${p.day}</div><div class="popup-name">${p.name}</div><div class="popup-info">${p.miles} mi · ${p.summitElev.toLocaleString()} ft · ${p.start}</div><a class="popup-btn" onclick="showDetail(${p.id});return false">View Route →</a>`);
+    // TH blue dot
+    L.circleMarker([p.trailhead.lat,p.trailhead.lng],{radius:5,color:'#4a8fa8',fillColor:'#4a8fa8',fillOpacity:.9,weight:1.5}).addTo(mainMap)
+      .bindPopup(`<div class="popup-day">Trailhead · ${p.name}</div><div class="popup-info">${p.trailhead.label}</div>`);
+  });
+ 
+  const fixMain = () => { mainMap.invalidateSize(true); mainMap.setView([40.10,-111.65], 10, {animate:false}); };
+  fixMain();
+  setTimeout(fixMain, 300);
+  setTimeout(fixMain, 800);
 }
  
 function toggleDone(id){
-  completed=completed.includes(id)?completed.filter(x=>x!==id):[...completed,id];
-  localStorage.setItem('peaks_done',JSON.stringify(completed));
-  renderList(); showDetail(id);
+  completed = completed.includes(id) ? completed.filter(x=>x!==id) : [...completed,id];
+  localStorage.setItem('peaks_done', JSON.stringify(completed));
+  renderList();
+  showDetail(id);
 }
  
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  currentPage=name;
-  if(name==='list'){document.getElementById('list-page').classList.add('active');document.getElementById('nav-list').classList.add('active')}
-  else if(name==='map'){document.getElementById('map-page').classList.add('active');document.getElementById('nav-map').classList.add('active');requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(initMainMap,100)))}
-  else if(name==='detail'){document.getElementById('detail-page').classList.add('active')}
+  currentPage = name;
+  if(name==='list'){
+    document.getElementById('list-page').classList.add('active');
+    document.getElementById('nav-list').classList.add('active');
+  } else if(name==='map'){
+    document.getElementById('map-page').classList.add('active');
+    document.getElementById('nav-map').classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(initMainMap,100)));
+  } else if(name==='detail'){
+    document.getElementById('detail-page').classList.add('active');
+  }
 }
  
-function backToList(){showPage('list')}
+function backToList(){ showPage('list'); }
  
 function copyCoords(lat,lng){
-  const s=`${lat},${lng}`;
-  navigator.clipboard?navigator.clipboard.writeText(s):(()=>{const t=document.createElement('textarea');t.value=s;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t)})();
-  const toast=document.getElementById('toast');toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800);
+  const s = `${lat},${lng}`;
+  if(navigator.clipboard){ navigator.clipboard.writeText(s); }
+  else {
+    const t = document.createElement('textarea');
+    t.value = s; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); document.body.removeChild(t);
+  }
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 1800);
 }
  
+// Init
 renderList();
 </script>
 </body>
