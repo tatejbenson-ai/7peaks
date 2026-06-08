@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>7 Peaks · Trail Guide</title>
+<link rel="manifest" href="data:application/json,{}">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Leaflet for offline-capable maps -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #141210;
+    --surface: #1e1b18;
+    --border: rgba(196,180,154,0.1);
+    --dust: #8b7f72;
+    --sand: #c4b49a;
+    --snow: #f0ece6;
+    --summit: #e8522a;
+    --sky: #4a8fa8;
+    --pine: #3d6b4f;
+    --nav-h: 60px;
+  }
+  html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--snow); }
+
+  /* NAV */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+    background: rgba(20,18,16,0.96); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 16px; gap: 12px; z-index: 1000;
+  }
+  .topbar-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--snow); flex: 1; }
+  .topbar-subtitle { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dust); letter-spacing: 0.1em; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+    background: rgba(20,18,16,0.97); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: flex; z-index: 1000;
+  }
+  .nav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; cursor: pointer; border: none; background: none; color: var(--dust);
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: color 0.2s; -webkit-tap-highlight-color: transparent;
+  }
+  .nav-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+  .nav-btn.active { color: var(--summit); }
+
+  /* PAGES */
+  .page { 
+    position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 64px;
+    overflow-y: auto; overflow-x: hidden;
+    display: none; -webkit-overflow-scrolling: touch;
+  }
+  .page.active { display: block; }
+  #map-page { display: none; }
+  #map-page.active { display: block; overflow: hidden; }
+
+  /* ===== LIST PAGE ===== */
+  .day-list { padding: 0; }
+  .day-item {
+    display: flex; align-items: stretch; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.15s; -webkit-tap-highlight-color: transparent;
+    text-decoration: none; color: inherit;
+  }
+  .day-item:hover, .day-item:active { background: rgba(255,255,255,0.03); }
+  .day-num-col {
+    width: 60px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: rgba(139,127,114,0.25);
+    flex-shrink: 0; padding: 20px 0;
+  }
+  .day-info { flex: 1; padding: 18px 16px 18px 8px; }
+  .day-label-sm { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; color: var(--dust); text-transform: uppercase; margin-bottom: 4px; }
+  .day-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; line-height: 1; color: var(--sand); margin-bottom: 8px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 2px; text-transform: uppercase; }
+  .tag-mi { background: rgba(74,143,168,0.15); color: var(--sky); border: 1px solid rgba(74,143,168,0.3); }
+  .tag-elev { background: rgba(196,180,154,0.1); color: var(--sand); border: 1px solid rgba(196,180,154,0.2); }
+  .tag-time { background: rgba(61,107,79,0.2); color: #6ab087; border: 1px solid rgba(61,107,79,0.4); }
+  .tag-hard { background: rgba(232,82,42,0.12); color: var(--summit); border: 1px solid rgba(232,82,42,0.3); }
+  .day-chevron { display: flex; align-items: center; padding-right: 16px; color: rgba(139,127,114,0.4); font-size: 18px; }
+
+  /* SUMMARY BANNER */
+  .summary-banner {
+    background: linear-gradient(135deg, rgba(232,82,42,0.08), rgba(74,143,168,0.05));
+    border-bottom: 1px solid var(--border); padding: 20px 16px;
+    display: flex; gap: 0; justify-content: space-around;
+  }
+  .s-stat { text-align: center; }
+  .s-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--sand); }
+  .s-lbl { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--dust); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+
+  /* ===== DETAIL PAGE ===== */
+  #detail-page { background: var(--bg); }
+  .detail-header {
+    background: linear-gradient(to bottom, rgba(232,82,42,0.07), transparent);
+    padding: 24px 20px 20px; border-bottom: 1px solid var(--border);
+  }
+  .detail-back { 
+    display: flex; align-items: center; gap: 6px; margin-bottom: 16px;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dust);
+    cursor: pointer; -webkit-tap-highlight-color: transparent; width: fit-content;
+  }
+  .detail-day-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--summit); text-transform: uppercase; margin-bottom: 6px; }
+  .detail-peak-name { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; color: var(--snow); margin-bottom: 14px; }
+  .detail-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .detail-section { padding: 20px; border-bottom: 1px solid var(--border); }
+  .detail-section-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--summit); text-transform: uppercase; margin-bottom: 14px; }
+
+  /* MINI MAP in detail */
+  .mini-map { height: 220px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+
+  /* WAYPOINTS */
+  .waypoint-list { display: flex; flex-direction: column; gap: 0; }
+  .waypoint {
+    display: flex; align-items: flex-start; gap: 14px; padding: 12px 0;
+    border-bottom: 1px solid rgba(196,180,154,0.06);
+  }
+  .waypoint:last-child { border-bottom: none; }
+  .wp-dot {
+    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 12px; margin-top: 2px;
+  }
+  .wp-dot.start { background: rgba(61,107,79,0.3); border: 1px solid #3d6b4f; }
+  .wp-dot.mid { background: rgba(74,143,168,0.2); border: 1px solid var(--sky); }
+  .wp-dot.summit { background: rgba(232,82,42,0.2); border: 1px solid var(--summit); }
+  .wp-dot.end { background: rgba(139,127,114,0.2); border: 1px solid var(--dust); }
+  .wp-info { flex: 1; }
+  .wp-name { font-size: 14px; font-weight: 500; color: var(--snow); margin-bottom: 2px; }
+  .wp-coords { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dust); margin-bottom: 3px; }
+  .wp-elev { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--sky); }
+  .wp-note { font-size: 12px; color: var(--dust); margin-top: 4px; line-height: 1.5; }
+
+  .open-maps-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 14px; margin-top: 16px;
+    background: rgba(232,82,42,0.12); border: 1px solid rgba(232,82,42,0.35);
+    border-radius: 4px; color: var(--summit);
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer; text-decoration: none; -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ALERTS */
+  .alert-card {
+    background: rgba(232,82,42,0.08); border: 1px solid rgba(232,82,42,0.2);
+    border-radius: 4px; padding: 12px 14px; margin-bottom: 10px;
+  }
+  .alert-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--summit); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .alert-body { font-size: 13px; color: var(--dust); line-height: 1.6; }
+  .info-card {
+    background: rgba(74,143,168,0.08); border: 1px solid rgba(74,143,168,0.2);
+    border-radius: 4px; padding: 12px 14px; margin-bottom: 10px;
+  }
+  .info-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--sky); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .info-body { font-size: 13px; color: var(--dust); line-height: 1.6; }
+
+  /* GPS COORDS */
+  .coord-copy {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'DM Mono', monospace; font-size: 12px; color: var(--sky);
+    cursor: pointer; padding: 2px 4px; border-radius: 2px;
+    transition: background 0.15s; -webkit-tap-highlight-color: transparent;
+  }
+  .coord-copy:active { background: rgba(74,143,168,0.15); }
+  .copied-toast {
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+    background: var(--pine); color: #fff; padding: 8px 18px; border-radius: 20px;
+    font-family: 'DM Mono', monospace; font-size: 11px; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s; z-index: 9999;
+  }
+  .copied-toast.show { opacity: 1; }
+
+  /* ===== MAP PAGE ===== */
+  #main-map { width: 100%; height: 100%; }
+  .leaflet-container { background: #0f0d0b !important; }
+
+  /* Map peak popup */
+  .leaflet-popup-content-wrapper {
+    background: var(--surface) !important; border: 1px solid var(--border) !important;
+    border-radius: 4px !important; color: var(--snow) !important; box-shadow: 0 4px 24px rgba(0,0,0,0.5) !important;
+  }
+  .leaflet-popup-tip { background: var(--surface) !important; }
+  .leaflet-popup-content { margin: 12px 14px !important; }
+  .popup-day { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--summit); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+  .popup-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--snow); }
+  .popup-info { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dust); margin-top: 4px; }
+  .popup-btn {
+    display: block; margin-top: 10px; padding: 8px; text-align: center;
+    background: rgba(232,82,42,0.15); border: 1px solid rgba(232,82,42,0.3);
+    border-radius: 3px; color: var(--summit); font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    text-decoration: none;
+  }
+
+  /* Custom map marker */
+  .peak-marker {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--summit); border: 2px solid rgba(240,236,230,0.8);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: #fff;
+    box-shadow: 0 2px 12px rgba(232,82,42,0.5);
+  }
+  .peak-marker.done { background: var(--pine); box-shadow: 0 2px 12px rgba(61,107,79,0.5); }
+
+  /* CHECKLIST / STATUS */
+  .status-toggle {
+    display: flex; align-items: center; gap: 12px; padding: 16px 20px;
+    border-bottom: 1px solid var(--border); cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .status-check {
+    width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--dust);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-size: 12px; transition: all 0.2s;
+  }
+  .status-check.done { background: var(--pine); border-color: var(--pine); }
+  .status-text { font-size: 14px; color: var(--snow); }
+  .status-text small { display: block; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dust); margin-top: 2px; }
+
+  /* Progress bar */
+  .progress-wrap { padding: 16px 20px 0; }
+  .progress-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--dust); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 3px; background: rgba(196,180,154,0.15); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--summit); border-radius: 2px; transition: width 0.5s ease; }
+
+  /* Leaflet attribution override */
+  .leaflet-control-attribution { background: rgba(20,18,16,0.7) !important; color: var(--dust) !important; font-size: 9px !important; }
+  .leaflet-control-attribution a { color: var(--sky) !important; }
+
+  /* Scroll helper */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: rgba(139,127,114,0.3); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title">7 Peaks · 6 Days</div>
+    <div class="topbar-subtitle">Utah County Wasatch</div>
+  </div>
+  <div id="progress-mini" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--summit)">0/7</div>
+</div>
+
+<!-- PAGES -->
+
+<!-- LIST PAGE -->
+<div class="page active" id="list-page">
+  <div class="summary-banner">
+    <div class="s-stat"><div class="s-num">77.3</div><div class="s-lbl">Miles</div></div>
+    <div class="s-stat"><div class="s-num">~26k</div><div class="s-lbl">Ft Gain</div></div>
+    <div class="s-stat"><div class="s-num">6</div><div class="s-lbl">Days</div></div>
+    <div class="s-stat"><div class="s-num">11,933</div><div class="s-lbl">Max Elev</div></div>
+  </div>
+  <div class="day-list" id="day-list"></div>
+</div>
+
+<!-- MAP PAGE -->
+<div class="page" id="map-page">
+  <div id="main-map"></div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="page" id="detail-page"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-list" onclick="showPage('list')">
+    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    Days
+  </button>
+  <button class="nav-btn" id="nav-map" onclick="showPage('map')">
+    <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+    Map
+  </button>
+</div>
+
+<div class="copied-toast" id="toast">Copied!</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const PEAKS = [
+  {
+    id: 0,
+    day: 'Monday',
+    dayNum: 1,
+    name: 'Loafer Mountain',
+    subtitle: '& Santaquin Peak',
+    miles: 11.6,
+    elevGain: 4400,
+    summitElev: 10700,
+    start: '6:00 AM',
+    difficulty: 'Hard',
+    scramble: false,
+    trailhead: { lat: 39.9408, lng: -111.6441, elev: 7716, label: 'Loafer TH (Nebo Loop Rd)' },
+    summit: { lat: 39.9833, lng: -111.6237, elev: 10685 },
+    waypoints: [
+      { type:'start', label:'Loafer Mountain Trailhead', lat:39.9408, lng:-111.6441, elev:'7,716 ft', note:'Gravel parking on left off Nebo Loop Rd, just before Payson Lakes turnoff' },
+      { type:'mid', label:'Bennie Creek Junction', lat:39.9550, lng:-111.6380, elev:'~8,400 ft', note:'Turn left onto Bennie Creek trail, steep forested switchbacks begin' },
+      { type:'mid', label:'Ridge Saddle', lat:39.9679, lng:-111.6447, elev:'9,500 ft', note:'First big payoff — views down to Payson Lakes and Mt Nebo to south. Santaquin veers left, Loafer straight.' },
+      { type:'summit', label:'Loafer Mountain Summit', lat:39.9750, lng:-111.6330, elev:'10,700 ft', note:'Highest point, leave-trail scramble. Views of Utah Valley.' },
+      { type:'summit', label:'Santaquin Peak Summit', lat:39.9833, lng:-111.6237, elev:'10,612 ft', note:'Trail peak, better views than Loafer. Retrace to saddle then TH.' },
+    ],
+    alerts: [
+      { type:'info', title:'Trail Notes', body:'First 2 miles moderate with shade. Then exposed steep shale/gravel for 1–1.5 miles fully exposed west. Hit both peaks from the ridge saddle.' },
+      { type:'warn', title:'Water', body:'Bring 3+ liters. No reliable water on trail. Hot and exposed on the upper sections.' },
+    ],
+    alltrails: 'https://www.alltrails.com/trail/us/utah/loafer-mountain-and-santaquin-peak-trail',
+  },
+  {
+    id: 1,
+    day: 'Tuesday',
+    dayNum: 2,
+    name: 'Lone Peak',
+    subtitle: "via Peak View & Jacob's Ladder",
+    miles: 16,
+    elevGain: 5800,
+    summitElev: 11253,
+    start: '6:00 AM',
+    difficulty: 'Extreme',
+    scramble: true,
+    trailhead: { lat: 40.4311, lng: -111.6391, elev: 5760, label: 'Peak View Trailhead, Draper' },
+    summit: { lat: 40.4935, lng: -111.7570, elev: 11253 },
+    waypoints: [
+      { type:'start', label:"Peak View Trailhead", lat:40.4311, lng:-111.6391, elev:'5,760 ft', note:"Large lot with restrooms. Navigate to 'Peak View Trailhead' in Google Maps. Hike behind gate." },
+      { type:'mid', label:"Base of Jacob's Ladder", lat:40.4943, lng:-111.8166, elev:'~7,200 ft', note:"After ~2.5 mile dirt road traverse. Steep narrow switchbacks start here — unrelenting." },
+      { type:'mid', label:'Upper Meadow', lat:40.4952, lng:-111.7789, elev:'~9,800 ft', note:'Trail levels out. Wildflowers. Pine forest. Trail becomes faint here — watch for cairns.' },
+      { type:'mid', label:'Lone Peak Cirque', lat:40.4940, lng:-111.7640, elev:'~10,600 ft', note:"Veer LEFT at cirque toward visible peak. Don't lose the route here." },
+      { type:'summit', label:'Lone Peak Summit', lat:40.4935, lng:-111.7570, elev:'11,253 ft', note:'Summit is kitchen-table sized with 600 ft drops. Class 3+ scramble to top. Lightning magnet — be off by noon.' },
+    ],
+    alerts: [
+      { type:'warn', title:'⚡ Scramble + Lightning Risk', body:"Jacob's Ladder is brutally steep. Summit is no bigger than a kitchen table with sheer drops. Off summit by noon — lightning magnet. No dogs allowed (watershed)." },
+      { type:'info', title:'Route Finding', body:"Trail disappears at upper meadow. Navigate by cairns and terrain toward the cirque. Veer LEFT at cirque base. A GPS track is critical above 10,000 ft." },
+    ],
+    alltrails: 'https://www.alltrails.com/trail/us/utah/lone-peak-via-peak-view-and-jacob-s-ladder-trail',
+  },
+  {
+    id: 2,
+    day: 'Wednesday',
+    dayNum: 3,
+    name: 'Spanish Fork Peak',
+    subtitle: 'via Maple Canyon',
+    miles: 11,
+    elevGain: 4675,
+    summitElev: 10192,
+    start: '6:00 AM',
+    difficulty: 'Hard',
+    scramble: false,
+    trailhead: { lat: 40.1368, lng: -111.5202, elev: 5800, label: 'Maple Canyon TH, Mapleton' },
+    summit: { lat: 40.0882, lng: -111.5277, elev: 10192 },
+    waypoints: [
+      { type:'start', label:'Maple Canyon Trailhead', lat:40.1368, lng:-111.5202, elev:'5,800 ft', note:'Drive east on 400 N (Mapleton) to Whitings Campground. Pass campground, park at lot end. Bathroom available.' },
+      { type:'mid', label:'Left Fork / Trail Junction', lat:40.1353, lng:-111.5232, elev:'~6,200 ft', note:'Quarter mile up Left Fork Maple Canyon Trail. Cross small wooden bridge (40.1353, -111.5232) — this is the Spanish Fork Peak trail fork.' },
+      { type:'mid', label:'Maple Canyon Lake', lat:40.1200, lng:-111.5350, elev:'~8,800 ft', note:'Plateau with meadows and the "lake" (more of a pond). Mosquitoes in summer. Trail gets steep again after here.' },
+      { type:'mid', label:'Summit Ridge Saddle', lat:40.1200, lng:-111.5400, elev:'~9,800 ft', note:'Turn LEFT (south) at ridge for summit. Panoramic views of Utah Valley and east.' },
+      { type:'summit', label:'Spanish Fork Peak Summit', lat:40.0882, lng:-111.5277, elev:'10,192 ft', note:'Also called Maple Mountain. Class 1 hike to top. Incredible isolation views.' },
+    ],
+    alerts: [
+      { type:'info', title:'Recovery Day', body:"This is your 'easier' day sandwiched between Lone Peak and Cascade/Provo. Use it. Legs will be cooked from Tuesday. Steady pace, no heroics." },
+      { type:'warn', title:'Snow Note', body:'Late season snow covers the bowl before the saddle and can linger into June/July. May need to cross steep snowfields — trekking poles help.' },
+    ],
+    alltrails: 'https://www.alltrails.com/trail/us/utah/spanish-fork-peak-via-maple-canyon',
+  },
+  {
+    id: 3,
+    day: 'Thursday',
+    dayNum: 4,
+    name: 'Cascade & Provo Peak',
+    subtitle: 'via Upper Pole Couloir',
+    miles: 15.3,
+    elevGain: 7096,
+    summitElev: 11068,
+    start: '5:30 AM',
+    difficulty: 'Extreme',
+    scramble: true,
+    trailhead: { lat: 40.2900, lng: -111.5920, elev: 5400, label: 'Quarry Trailhead, Rock Canyon' },
+    summit: { lat: 40.2444, lng: -111.5566, elev: 11068 },
+    waypoints: [
+      { type:'start', label:'Quarry Trailhead (Rock Canyon)', lat:40.2900, lng:-111.5920, elev:'5,400 ft', note:'Drive Squaw Peak Rd into Rock Canyon. Social trail leads north from parking lot into the Upper Pole Couloir gully.' },
+      { type:'mid', label:'Upper Pole Couloir Base', lat:40.2980, lng:-111.5850, elev:'~7,000 ft', note:'Steep scree-filled gully. Look for cairn leading left to ridge north of couloir. Loose and demanding.' },
+      { type:'mid', label:'Cascade Mountain Summit', lat:40.3070, lng:-111.5880, elev:'10,908 ft', note:'First summit. Great views of Timp to north. Continue south along ridge toward Provo Peak.' },
+      { type:'mid', label:'Ridge Traverse (Class 3-4)', lat:40.2800, lng:-111.5700, elev:'~10,500 ft', note:'Traversal past South Cascade, Shingle Mill, Freedom, East Provo — increasingly technical. Loose rock, exposure. Most serious section of entire week.' },
+      { type:'summit', label:'Provo Peak Summit', lat:40.2444, lng:-111.5566, elev:'11,068 ft', note:'Highest point of the day and most committing objective of the week. Return via same ridge or descend Dry Fork.' },
+    ],
+    alerts: [
+      { type:'warn', title:'⚡ Most Committing Day', body:'7,096 ft gain with Class 3–4 scrambling across a technical ridge. No defined trail for much of the day. Route finding critical. Do NOT go solo. 5:30 AM start is mandatory.' },
+      { type:'warn', title:'High Clearance Vehicle', body:'Squaw Peak Road to Quarry TH is rough. Small cars struggle. SUV or high clearance strongly recommended.' },
+      { type:'info', title:'Ridge Order', body:'Cascade → South Cascade → Shingle Mill → Freedom → East Provo → Provo Peak. Gets harder as you go. Save energy for the final Provo scramble.' },
+    ],
+    alltrails: 'https://www.alltrails.com/trail/us/utah/cascade-mountain-to-provo-peak-via-upper-pole-couloir',
+  },
+  {
+    id: 4,
+    day: 'Friday',
+    dayNum: 5,
+    name: 'Mount Timpanogos',
+    subtitle: 'via Timpooneke Trail',
+    miles: 14.4,
+    elevGain: 4380,
+    summitElev: 11753,
+    start: '5:30 AM',
+    difficulty: 'Strenuous',
+    scramble: false,
+    trailhead: { lat: 40.4311, lng: -111.6391, elev: 7380, label: 'Timpooneke TH, American Fork Canyon' },
+    summit: { lat: 40.3908, lng: -111.6459, elev: 11753 },
+    waypoints: [
+      { type:'start', label:'Timpooneke Trailhead', lat:40.4311, lng:-111.6391, elev:'7,380 ft', note:'Off Alpine Loop Road in American Fork Canyon. $6 fee. Book parking permit at Recreation.gov (busy season). Bathroom on site.' },
+      { type:'mid', label:'Scout Falls', lat:40.4200, lng:-111.6450, elev:'~8,200 ft', note:'Scenic waterfall 2 miles up. Good rest spot. Trail follows South Fork river through here.' },
+      { type:'mid', label:'Timpanogos Basin', lat:40.4050, lng:-111.6480, elev:'~9,800 ft', note:'Open alpine basin. Massive meadows. Trail junction — follow signs for summit. Wildflowers peak mid-July.' },
+      { type:'mid', label:'Timp Saddle', lat:40.3966, lng:-111.6550, elev:'~11,000 ft', note:'5.9 miles from TH. Where Aspen Grove trail joins. Mountain goats common here. Rocky exposed ridge ahead.' },
+      { type:'summit', label:'Mt Timpanogos Summit', lat:40.3908, lng:-111.6459, elev:'11,753 ft', note:'Old USGS hut at top. 8 ft wide. Views of entire Utah Valley, SL Valley, Heber. Stay off by noon — afternoon storms.' },
+    ],
+    alerts: [
+      { type:'info', title:'Permit Note', body:'Timpooneke parking requires a timed-entry permit during peak season (July–Sept). Book at Recreation.gov in advance. Very popular.' },
+      { type:'warn', title:'Day 5 Fatigue', body:"Your legs have 42.6 miles over 4 days before this. Timp's 4,380 ft gain will feel different than day 1. Eat extra the night before. Take it steady." },
+      { type:'info', title:'Mountain Goats', body:'High probability of goat encounters at the saddle and above. Keep distance — they will approach for salt. Do not feed.' },
+    ],
+    alltrails: 'https://www.alltrails.com/trail/us/utah/mt-timpanogos-timpooneke-trail',
+  },
+  {
+    id: 5,
+    day: 'Saturday',
+    dayNum: 6,
+    name: 'Mount Nebo',
+    subtitle: 'Highest peak in Utah County',
+    miles: 9,
+    elevGain: 4180,
+    summitElev: 11933,
+    start: '6:00 AM',
+    difficulty: 'Strenuous',
+    scramble: false,
+    trailhead: { lat: 39.8800, lng: -111.7700, elev: 9260, label: 'Nebo Bench Trailhead' },
+    summit: { lat: 39.8216, lng: -111.7599, elev: 11933 },
+    waypoints: [
+      { type:'start', label:'Nebo Bench Trailhead', lat:39.8800, lng:-111.7700, elev:'9,260 ft', note:'24 miles up Nebo Scenic Loop from Payson. Signed trailhead with gravel parking. Highest start elevation of the week.' },
+      { type:'mid', label:'North Peak Crest', lat:39.8600, lng:-111.7650, elev:'10,500 ft', note:'Trail reaches northern ridgeline. North Peak (11,174 ft) visible. Nebo summit finally comes into view.' },
+      { type:'mid', label:'Wolf Pass', lat:39.8450, lng:-111.7630, elev:'10,620 ft', note:'3.6 miles in. Saddle between North Peak and Nebo. Steep final push begins from here.' },
+      { type:'mid', label:'False Summit / Wolf Pass Peak', lat:39.8380, lng:-111.7610, elev:'11,460 ft', note:"Don't let this fool you. True summit is further south. Rocky, exposed ridge continues." },
+      { type:'summit', label:'Mount Nebo Summit', lat:39.8216, lng:-111.7599, elev:'11,933 ft', note:'Highest point in Utah County and Wasatch Range. You did it. 7 peaks. All of them. Views forever.' },
+    ],
+    alerts: [
+      { type:'warn', title:'No Water On Trail', body:'Zero water sources. Bring 3+ liters minimum. This is the most critical water situation of the week — carry everything from the car.' },
+      { type:'info', title:'The Finish Line', body:"9 miles on tired legs after 68+ miles this week. The final 300 yards to summit are the steepest. Take your time. You've earned this one." },
+      { type:'info', title:'False Summits', body:'Two false summits on the approach. Wolf Pass Peak at 11,460 ft will fool you. Keep going south along the ridge.' },
+    ],
+    alltrails: 'https://www.alltrails.com/trail/us/utah/mount-nebo',
+  },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentPage = 'list';
+let currentPeak = null;
+let mainMap = null;
+let detailMaps = {};
+let completed = JSON.parse(localStorage.getItem('peaks_done') || '[]');
+
+// ============================================================
+// RENDER LIST
+// ============================================================
+function renderList() {
+  const list = document.getElementById('day-list');
+  list.innerHTML = '';
+  PEAKS.forEach(p => {
+    const done = completed.includes(p.id);
+    const div = document.createElement('div');
+    div.className = 'day-item';
+    div.onclick = () => showDetail(p.id);
+    div.innerHTML = `
+      <div class="day-num-col" style="${done?'color:rgba(61,107,79,0.6)':''}">${p.dayNum.toString().padStart(2,'0')}</div>
+      <div class="day-info">
+        <div class="day-label-sm">${p.day}${done?' · ✓ Done':''}</div>
+        <div class="day-name" style="${done?'color:var(--pine)':''}">${p.name}</div>
+        <div class="tag-row">
+          <span class="tag tag-mi">${p.miles} mi</span>
+          <span class="tag tag-elev">${p.summitElev.toLocaleString()} ft</span>
+          <span class="tag tag-time">${p.start}</span>
+          ${p.scramble?'<span class="tag tag-hard">⚡ Scramble</span>':''}
+        </div>
+      </div>
+      <div class="day-chevron">›</div>
+    `;
+    list.appendChild(div);
+  });
+  updateProgress();
+}
+
+// ============================================================
+// PROGRESS
+// ============================================================
+function updateProgress() {
+  const n = completed.length;
+  document.getElementById('progress-mini').textContent = n + '/7';
+}
+
+// ============================================================
+// SHOW DETAIL
+// ============================================================
+function showDetail(id) {
+  currentPeak = PEAKS[id];
+  const p = currentPeak;
+  const done = completed.includes(p.id);
+  const page = document.getElementById('detail-page');
+
+  const alertsHtml = p.alerts.map(a => `
+    <div class="${a.type==='warn'?'alert-card':'info-card'}">
+      <div class="${a.type==='warn'?'alert-title':'info-title'}">${a.title}</div>
+      <div class="${a.type==='warn'?'alert-body':'info-body'}">${a.body}</div>
+    </div>
+  `).join('');
+
+  const wpsHtml = p.waypoints.map((w,i) => `
+    <div class="waypoint">
+      <div class="wp-dot ${w.type}">${w.type==='start'?'🚗':w.type==='summit'?'🏔':'📍'}</div>
+      <div class="wp-info">
+        <div class="wp-name">${w.label}</div>
+        <div class="wp-elev">${w.elev}</div>
+        <div class="wp-coords" onclick="copyCoords(${w.lat},${w.lng})" style="cursor:pointer;">
+          <span class="coord-copy">📋 ${w.lat.toFixed(4)}, ${w.lng.toFixed(4)}</span>
+        </div>
+        <div class="wp-note">${w.note}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const mapsUrl = `https://maps.apple.com/?daddr=${p.trailhead.lat},${p.trailhead.lng}&dirflg=d`;
+  const googleUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.trailhead.lat},${p.trailhead.lng}&travelmode=driving`;
+
+  page.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-back" onclick="backToList()">‹ All Days</div>
+      <div class="detail-day-label">Day ${p.dayNum} · ${p.day}</div>
+      <div class="detail-peak-name">${p.name}</div>
+      <div class="detail-tags">
+        <span class="tag tag-mi">${p.miles} mi</span>
+        <span class="tag tag-elev">${p.elevGain.toLocaleString()} ft gain</span>
+        <span class="tag tag-time">${p.start} start</span>
+        <span class="tag tag-elev">Summit: ${p.summitElev.toLocaleString()} ft</span>
+        ${p.scramble?'<span class="tag tag-hard">⚡ Scramble</span>':''}
+      </div>
+    </div>
+
+    <!-- STATUS TOGGLE -->
+    <div class="status-toggle" onclick="toggleDone(${p.id})">
+      <div class="status-check ${done?'done':''}" id="check-${p.id}">${done?'✓':''}</div>
+      <div class="status-text">
+        ${done?'Summited! ✓':'Mark as completed'}
+        <small>${done?'Tap to unmark':'Tap after you summit'}</small>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="detail-section">
+      <div class="detail-section-title">Trailhead Location</div>
+      <div class="mini-map" id="detail-map-${p.id}"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <a href="${mapsUrl}" class="open-maps-btn" style="flex:1;font-size:10px;">🗺 Apple Maps</a>
+        <a href="${googleUrl}" class="open-maps-btn" style="flex:1;font-size:10px;">📍 Google Maps</a>
+      </div>
+    </div>
+
+    <!-- ALERTS -->
+    <div class="detail-section">
+      <div class="detail-section-title">Important Notes</div>
+      ${alertsHtml}
+    </div>
+
+    <!-- WAYPOINTS -->
+    <div class="detail-section">
+      <div class="detail-section-title">Waypoints · Tap coords to copy</div>
+      <div class="waypoint-list">${wpsHtml}</div>
+    </div>
+
+    <!-- ALLTRAILS LINK -->
+    <div class="detail-section" style="border-bottom:none;">
+      <a href="${p.alltrails}" class="open-maps-btn" target="_blank">↗ View Full Route on AllTrails</a>
+    </div>
+  `;
+
+  showPage('detail');
+
+  // Init mini map after render
+  setTimeout(() => {
+    const mapEl = document.getElementById(`detail-map-${p.id}`);
+    if (mapEl && !detailMaps[p.id]) {
+      const m = L.map(mapEl, { zoomControl: true, attributionControl: false }).setView([p.trailhead.lat, p.trailhead.lng], 13);
+      L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 17, opacity: 0.85
+      }).addTo(m);
+      // Topo tile fallback
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 17, opacity: 0.1
+      }).addTo(m);
+
+      // Trailhead marker
+      const thIcon = L.divIcon({ html: '<div style="background:#3d6b4f;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5)"></div>', className:'', iconSize:[14,14], iconAnchor:[7,7] });
+      L.marker([p.trailhead.lat, p.trailhead.lng], {icon: thIcon}).addTo(m).bindPopup(`<b>Trailhead</b><br>${p.trailhead.label}`);
+
+      // Summit marker
+      const sumIcon = L.divIcon({ html: '<div style="background:#e8522a;width:16px;height:16px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px rgba(232,82,42,0.6)"></div>', className:'', iconSize:[16,16], iconAnchor:[8,8] });
+      L.marker([p.summit.lat, p.summit.lng], {icon: sumIcon}).addTo(m).bindPopup(`<b>${p.name} Summit</b>`);
+
+      // Line between TH and summit (approximate)
+      L.polyline([[p.trailhead.lat, p.trailhead.lng],[p.summit.lat, p.summit.lng]], {
+        color: '#e8522a', weight: 2, opacity: 0.5, dashArray: '6,4'
+      }).addTo(m);
+
+      detailMaps[p.id] = m;
+    }
+  }, 100);
+}
+
+// ============================================================
+// TOGGLE DONE
+// ============================================================
+function toggleDone(id) {
+  if (completed.includes(id)) {
+    completed = completed.filter(x => x !== id);
+  } else {
+    completed.push(id);
+  }
+  localStorage.setItem('peaks_done', JSON.stringify(completed));
+  renderList();
+  showDetail(id); // re-render
+}
+
+// ============================================================
+// MAIN MAP
+// ============================================================
+function initMainMap() {
+  if (mainMap) return;
+  const center = [40.15, -111.65];
+  mainMap = L.map('main-map', { zoomControl: true, attributionControl: true }).setView(center, 10);
+
+  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17, attribution: '© OpenTopoMap'
+  }).addTo(mainMap);
+
+  PEAKS.forEach(p => {
+    const done = completed.includes(p.id);
+    const icon = L.divIcon({
+      html: `<div style="background:${done?'#3d6b4f':'#e8522a'};width:34px;height:34px;border-radius:50%;border:2.5px solid #f0ece6;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;box-shadow:0 2px 14px rgba(${done?'61,107,79':'232,82,42'},0.6)">${p.dayNum}</div>`,
+      className: '', iconSize: [34,34], iconAnchor: [17,17]
+    });
+
+    L.marker([p.summit.lat, p.summit.lng], {icon})
+      .addTo(mainMap)
+      .bindPopup(`
+        <div class="popup-day">Day ${p.dayNum} · ${p.day}</div>
+        <div class="popup-name">${p.name}</div>
+        <div class="popup-info">${p.miles} mi · ${p.summitElev.toLocaleString()} ft · ${p.start}</div>
+        <a class="popup-btn" onclick="showDetail(${p.id});return false;">View Route →</a>
+      `);
+
+    // Trailhead dot
+    const thIcon = L.circleMarker([p.trailhead.lat, p.trailhead.lng], {
+      radius: 5, color: '#4a8fa8', fillColor: '#4a8fa8', fillOpacity: 0.7, weight: 1.5
+    }).addTo(mainMap);
+    thIcon.bindPopup(`<div class="popup-day">TH · ${p.name}</div><div class="popup-info">${p.trailhead.label}</div>`);
+
+    // Dashed line TH to summit
+    L.polyline([[p.trailhead.lat, p.trailhead.lng],[p.summit.lat, p.summit.lng]], {
+      color: '#e8522a', weight: 1.5, opacity: 0.3, dashArray: '5,5'
+    }).addTo(mainMap);
+  });
+}
+
+// ============================================================
+// PAGE NAV
+// ============================================================
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  currentPage = name;
+
+  if (name === 'list') {
+    document.getElementById('list-page').classList.add('active');
+    document.getElementById('nav-list').classList.add('active');
+  } else if (name === 'map') {
+    document.getElementById('map-page').classList.add('active');
+    document.getElementById('nav-map').classList.add('active');
+    setTimeout(initMainMap, 50);
+  } else if (name === 'detail') {
+    document.getElementById('detail-page').classList.add('active');
+  }
+}
+
+function backToList() {
+  showPage('list');
+}
+
+// ============================================================
+// COPY COORDS
+// ============================================================
+function copyCoords(lat, lng) {
+  const str = `${lat},${lng}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(str);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = str; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  }
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderList();
+</script>
+</body>
+</html>
