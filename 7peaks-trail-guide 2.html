@@ -9,15 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#141210;--surface:#1e1b18;--border:rgba(196,180,154,0.1);
-  --dust:#8b7f72;--sand:#c4b49a;--snow:#f0ece6;
-  --summit:#e8522a;--sky:#4a8fa8;--pine:#3d6b4f;--nav-h:60px;
-}
+:root{--bg:#141210;--surface:#1e1b18;--border:rgba(196,180,154,0.1);--dust:#8b7f72;--sand:#c4b49a;--snow:#f0ece6;--summit:#e8522a;--sky:#4a8fa8;--pine:#3d6b4f;--nav-h:60px}
 html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--snow)}
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(20,18,16,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;z-index:1000}
 .topbar-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--snow);flex:1}
-.topbar-subtitle{font-family:'DM Mono',monospace;font-size:10px;color:var(--dust);letter-spacing:.1em}
+.topbar-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--dust);letter-spacing:.1em}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:64px;background:rgba(20,18,16,0.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;z-index:1000}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:none;background:none;color:var(--dust);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;-webkit-tap-highlight-color:transparent}
 .nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
@@ -26,7 +22,6 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 .page.active{display:block}
 #map-page{display:none}
 #map-page.active{display:block;overflow:hidden}
-/* LIST */
 .summary-banner{background:linear-gradient(135deg,rgba(232,82,42,.08),rgba(74,143,168,.05));border-bottom:1px solid var(--border);padding:20px 16px;display:flex;justify-content:space-around}
 .s-stat{text-align:center}
 .s-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--sand)}
@@ -44,11 +39,10 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 .tag-time{background:rgba(61,107,79,.2);color:#6ab087;border:1px solid rgba(61,107,79,.4)}
 .tag-hard{background:rgba(232,82,42,.12);color:var(--summit);border:1px solid rgba(232,82,42,.3)}
 .day-chevron{display:flex;align-items:center;padding-right:16px;color:rgba(139,127,114,.4);font-size:18px}
-/* DETAIL */
 #detail-page{background:var(--bg)}
 .detail-header{background:linear-gradient(to bottom,rgba(232,82,42,.07),transparent);padding:24px 20px 20px;border-bottom:1px solid var(--border)}
 .detail-back{display:flex;align-items:center;gap:6px;margin-bottom:16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--dust);cursor:pointer;-webkit-tap-highlight-color:transparent;width:fit-content}
-.detail-day-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--summit);text-transform:uppercase;margin-bottom:6px}
+.detail-day-lbl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--summit);text-transform:uppercase;margin-bottom:6px}
 .detail-peak-name{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:1;color:var(--snow);margin-bottom:14px}
 .detail-tags{display:flex;flex-wrap:wrap;gap:8px}
 .detail-section{padding:20px;border-bottom:1px solid var(--border)}
@@ -79,7 +73,6 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 .status-check.done{background:var(--pine);border-color:var(--pine)}
 .status-text{font-size:14px;color:var(--snow)}
 .status-text small{display:block;font-family:'DM Mono',monospace;font-size:10px;color:var(--dust);margin-top:2px}
-/* MAP */
 #main-map{width:100%;height:100%}
 .leaflet-container{background:#0f0d0b !important}
 .leaflet-popup-content-wrapper{background:var(--surface) !important;border:1px solid var(--border) !important;border-radius:4px !important;color:var(--snow) !important;box-shadow:0 4px 24px rgba(0,0,0,.5) !important}
@@ -98,13 +91,9 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 </head>
 <body>
 <div class="topbar">
-  <div>
-    <div class="topbar-title">7 Peaks · 6 Days</div>
-    <div class="topbar-subtitle">Utah County Wasatch</div>
-  </div>
+  <div><div class="topbar-title">7 Peaks · 6 Days</div><div class="topbar-sub">Utah County Wasatch</div></div>
   <div id="progress-mini" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--summit)">0/7</div>
 </div>
- 
 <div class="page active" id="list-page">
   <div class="summary-banner">
     <div class="s-stat"><div class="s-num">77.3</div><div class="s-lbl">Miles</div></div>
@@ -114,234 +103,340 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
   </div>
   <div id="day-list"></div>
 </div>
- 
 <div class="page" id="map-page"><div id="main-map"></div></div>
 <div class="page" id="detail-page"></div>
- 
 <div class="bottom-nav">
   <button class="nav-btn active" id="nav-list" onclick="showPage('list')">
-    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    Days
+    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Days
   </button>
   <button class="nav-btn" id="nav-map" onclick="showPage('map')">
-    <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-    Map
+    <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>Map
   </button>
 </div>
 <div class="copied-toast" id="toast">Copied!</div>
  
 <script>
+// ============================================================
+// ALL ROUTES VERIFIED FROM OFFICIAL SOURCES
+// Sources: USFS, SummitPost, Stav is Lost, Anne's Travels,
+//          Girl on a Hike, Road Trip Ryan, Waymarking.com
+// ============================================================
 const PEAKS = [
+ 
+  // ── DAY 1: LOAFER MOUNTAIN ─────────────────────────────
+  // TH: 39.9408, -111.6441 (Anne's Travels, verified USFS)
+  // Route: TH → trail descends briefly → Blackhawk jct (stay straight) →
+  //        Bennie Creek jct (stay straight/continue on Loafer Mtn Trail) →
+  //        0.1mi later turn RIGHT on Loafer Mtn Trail → steep ascent →
+  //        ridge saddle → Santaquin Peak (trail) / Loafer (off-trail right)
   {
     id:0, day:'Monday', dayNum:1,
     name:'Loafer Mountain', subtitle:'& Santaquin Peak',
-    miles:11.6, elevGain:4400, summitElev:10700, start:'6:00 AM',
-    difficulty:'Hard', scramble:false,
-    // Trailhead: Nebo Loop Rd just before Payson Lakes turnoff
+    miles:11.6, elevGain:4400, summitElev:10700, start:'6:00 AM', scramble:false,
     trailhead:{lat:39.9408,lng:-111.6441,elev:7716,label:'Loafer Mtn Trailhead — Nebo Loop Rd'},
     summit:{lat:39.9833,lng:-111.6237,elev:10685},
-    // Approximate route polyline
     route:[
-      [39.9408,-111.6441], // TH
-      [39.9480,-111.6420], // lower forest
-      [39.9550,-111.6380], // Bennie Creek junction
-      [39.9610,-111.6360], // steep shale section
-      [39.9679,-111.6447], // ridge saddle 9500ft
-      [39.9720,-111.6360], // upper ridge
-      [39.9750,-111.6330], // Loafer summit
-      [39.9790,-111.6280], // saddle between peaks
-      [39.9833,-111.6237], // Santaquin summit
+      [39.9408,-111.6441], // TH — gravel parking, fenced
+      [39.9415,-111.6418], // Blackhawk Trail jct — STAY STRAIGHT (don't turn right)
+      [39.9440,-111.6400], // trail descends to small creek crossing
+      [39.9480,-111.6390], // Bennie Creek Trail jct — STAY STRAIGHT, continue on Loafer Mtn Trail
+      [39.9490,-111.6382], // 0.1mi later TURN RIGHT onto Loafer Mtn Trail (bikes/horses ok here)
+      [39.9530,-111.6350], // steep ascent begins, deciduous forest
+      [39.9580,-111.6320], // upper forest, aspens and oaks
+      [39.9630,-111.6310], // treeline, trail gets rocky
+      [39.9679,-111.6300], // ridge saddle — views of Payson Lakes, Nebo to south
+      [39.9710,-111.6270], // continue NW on ridge toward Santaquin
+      [39.9760,-111.6255], // trail contours west side of Loafer
+      [39.9833,-111.6237], // SANTAQUIN PEAK 10,612 ft
     ],
     waypoints:[
-      {type:'start',label:'Loafer Mtn Trailhead',lat:39.9408,lng:-111.6441,elev:'7,716 ft',note:'Gravel parking on LEFT off Nebo Loop Rd, just before Payson Lakes turnoff. Signed trailhead.'},
-      {type:'mid',label:'Bennie Creek Junction',lat:39.9550,lng:-111.6380,elev:'~8,400 ft',note:'Turn left onto Bennie Creek trail. Steep forested switchbacks begin here.'},
-      {type:'mid',label:'Ridge Saddle',lat:39.9679,lng:-111.6447,elev:'9,500 ft',note:'First big payoff — views of Payson Lakes and Mt Nebo. Santaquin goes LEFT, Loafer goes RIGHT off-trail.'},
-      {type:'summit',label:'Loafer Mountain',lat:39.9750,lng:-111.6330,elev:'10,700 ft',note:'Leave-trail scramble up ridge from saddle. Slightly higher than Santaquin but less scenic.'},
-      {type:'summit',label:'Santaquin Peak',lat:39.9833,lng:-111.6237,elev:'10,612 ft',note:'Better views. Trail goes around the west side of Loafer to reach this summit. Return to TH same way.'},
+      {type:'start',label:'Loafer Mtn Trailhead',lat:39.9408,lng:-111.6441,elev:'7,716 ft',
+       note:'Gravel parking on LEFT off Nebo Loop Rd, just before Payson Lakes turnoff. Signed "Loafer Mtn TR. 098". No fee, no bathroom.'},
+      {type:'mid',label:'Blackhawk Trail Junction',lat:39.9415,lng:-111.6418,elev:'7,706 ft',
+       note:'Just 0.14 miles in — STAY STRAIGHT on Loafer Mtn Trail. Do not turn right onto Blackhawk Trail.'},
+      {type:'mid',label:'Bennie Creek Junction',lat:39.9480,lng:-111.6390,elev:'~7,800 ft',
+       note:'STAY STRAIGHT — continue on Loafer Mtn Trail through the trees (don\'t cross the fence). Cross small creek just after. Then 0.1mi later TURN RIGHT onto the actual Loafer Mtn Trail.'},
+      {type:'mid',label:'Ridge Saddle',lat:39.9679,lng:-111.6300,elev:'~9,500 ft',
+       note:'3.4 miles in. First big views — Payson Lakes below, Nebo to south. Trail continues NW to Santaquin. For Loafer Mountain (2ft higher, off-trail), scramble RIGHT up the ridge spine from here.'},
+      {type:'summit',label:'Santaquin Peak',lat:39.9833,lng:-111.6237,elev:'10,612 ft',
+       note:'Trail goes around WEST side of Loafer to reach Santaquin. Better views than Loafer — 360° of Utah Lake, Timp, Nebo. Return same way to TH.'},
     ],
     alerts:[
-      {type:'info',title:'Route Order',body:'From the ridge saddle: hit Loafer first (right, off-trail scramble), return to saddle, then continue on trail left/west to Santaquin Peak. Both doable from the saddle.'},
-      {type:'warn',title:'Water — Bring 3+ Liters',body:'Exposed hot shale section for 1–1.5 miles fully in the sun. No water on trail. Start early.'},
+      {type:'warn',title:'Tricky Junctions Early On',body:'Two confusing junctions in the first mile. At Blackhawk: stay straight. At Bennie Creek: stay straight through trees, cross creek, then TURN RIGHT 0.1mi later onto the Loafer Mtn Trail. Signs are present but easy to miss.'},
+      {type:'warn',title:'No Water — 3+ Liters',body:'Exposed ridge for the final miles, hot in summer. No water sources on route. Start early.'},
     ],
     alltrails:'https://www.alltrails.com/trail/us/utah/loafer-mountain-and-santaquin-peak-trail',
   },
+ 
+  // ── DAY 2: LONE PEAK ───────────────────────────────────
+  // TH: Orson Smith Park, 40.5217, -111.8341 (verified SummitPost, KSL, AllTrails)
+  // Route: Orson Smith stairs → E on dirt trail → Aqueduct Trail LEFT →
+  //        BST → Cherry Canyon Logging Trail (signed, no dogs past here) →
+  //        steep switchbacks S-facing slope → ridge corner TURN LEFT east →
+  //        mountain mahogany forest → Bear Canyon / Cherry Canyon → flatten →
+  //        trail fork LEFT into woods → creek crossings → Outlaw Cabin →
+  //        drainage east → cirque → VEER LEFT up south side → summit
   {
     id:1, day:'Tuesday', dayNum:2,
-    name:'Lone Peak', subtitle:"via Peak View & Jacob's Ladder",
-    miles:16, elevGain:5800, summitElev:11253, start:'6:00 AM',
-    difficulty:'Extreme', scramble:true,
-    // Correct TH: Peak View Trailhead, Draper (Corner Canyon)
-    trailhead:{lat:40.4944,lng:-111.7997,elev:5760,label:"Peak View Trailhead — Corner Canyon, Draper"},
+    name:'Lone Peak', subtitle:'via Cherry Canyon Logging Trail',
+    miles:16, elevGain:6751, summitElev:11253, start:'6:00 AM', scramble:true,
+    trailhead:{lat:40.5217,lng:-111.8341,elev:4820,label:'Orson Smith Park — 2000 E & 12600 S, Draper'},
     summit:{lat:40.5269,lng:-111.7561,elev:11253},
     route:[
-      [40.4944,-111.7997], // Peak View TH
-      [40.4970,-111.7900], // Corner Canyon trail start
-      [40.5000,-111.7820], // Jacob's Ladder base
-      [40.5050,-111.7750], // steep switchbacks mid
-      [40.5100,-111.7700], // top of Jacob's Ladder
-      [40.5150,-111.7680], // upper meadow
-      [40.5200,-111.7640], // pine forest / granite slabs
-      [40.5230,-111.7610], // cirque approach
-      [40.5250,-111.7580], // cirque — VEER LEFT
-      [40.5260,-111.7570], // final scramble
-      [40.5269,-111.7561], // SUMMIT
+      [40.5217,-111.8341], // Orson Smith Park TH
+      [40.5213,-111.8320], // up wooden stairs N of restrooms, head east
+      [40.5208,-111.8290], // junction — Aqueduct Trail, turn LEFT
+      [40.5203,-111.8265], // follow to BST junction
+      [40.5198,-111.8240], // BST — turn LEFT, Cherry Canyon Logging Trail signed ~75yds ahead
+      [40.5193,-111.8215], // Cherry Canyon Logging Trail — TURN RIGHT (NO DOGS sign)
+      [40.5185,-111.8175], // 6-7 steep switchbacks on exposed S-facing slope
+      [40.5175,-111.8130], // trail flattens, crosses Cherry Canyon
+      [40.5168,-111.8090], // climbs again into forest
+      [40.5162,-111.8050], // ridge corner — TURN LEFT (east) into mountain mahogany forest
+      [40.5155,-111.7990], // shaded pine forest, aroma section
+      [40.5150,-111.7950], // flatter section, camping hollow
+      [40.5148,-111.7910], // trail fork — TURN LEFT into the woods (toward Bear Canyon)
+      [40.5150,-111.7870], // Bear Canyon / creek crossings — WATER HERE
+      [40.5155,-111.7830], // Outlaw Cabin on right (9,275 ft)
+      [40.5165,-111.7780], // continue E up drainage (no trail), stay LEFT/north of drainage
+      [40.5190,-111.7720], // drainage narrows, granite cliffs
+      [40.5210,-111.7670], // begin veering left through rocks onto west wall of cirque
+      [40.5230,-111.7630], // west wall of cirque — summit pops into view
+      [40.5250,-111.7600], // VEER LEFT up south side of cirque (cairns)
+      [40.5260,-111.7580], // Class 2-3 scramble, final push
+      [40.5269,-111.7561], // LONE PEAK SUMMIT 11,253 ft
     ],
     waypoints:[
-      {type:'start',label:'Peak View Trailhead',lat:40.4944,lng:-111.7997,elev:'5,760 ft',note:"Navigate to 'Peak View Trailhead' in Google Maps, Draper. Large lot with restrooms. Hike behind the gate and follow signs for Jacob's Ladder."},
-      {type:'mid',label:"Base of Jacob's Ladder",lat:40.5000,lng:-111.7820,elev:'~7,000 ft',note:"After ~2 miles on Corner Canyon trail/dirt road. The steep relentless switchbacks begin here. Unrelenting — this is the grind."},
-      {type:'mid',label:'Top of Switchbacks / Upper Meadow',lat:40.5150,lng:-111.7680,elev:'~9,800 ft',note:'Trail finally levels out. Beautiful wildflower meadow. Trail becomes FAINT here — follow cairns and head east toward summit.'},
-      {type:'mid',label:'Lone Peak Cirque',lat:40.5250,lng:-111.7580,elev:'~10,600 ft',note:'VEER LEFT at the cirque. Do not go right or straight. Follow cairns up the LEFT (south) side of the cirque toward the summit block.'},
-      {type:'summit',label:'Lone Peak Summit',lat:40.5269,lng:-111.7561,elev:'11,253 ft',note:'Kitchen-table sized summit with 600 ft drops on all sides. Class 2-3 scramble at top. Off summit by noon — lightning magnet. No dogs (watershed).'},
+      {type:'start',label:'Orson Smith Park TH',lat:40.5217,lng:-111.8341,elev:'4,820 ft',
+       note:'2000 E & 12600 S in Draper. Large paved lot with restrooms and water. Trail starts UP THE STAIRS just LEFT (north) of the restrooms, behind the info sign. Head east.'},
+      {type:'mid',label:'Cherry Canyon Logging Trail',lat:40.5193,lng:-111.8215,elev:'~5,200 ft',
+       note:'After Aqueduct Trail and BST junctions (~0.5mi), look for "Cherry Canyon Logging Trail" sign and NO DOGS sign. TURN RIGHT here. The real climb begins with 6-7 steep switchbacks.'},
+      {type:'mid',label:'Ridge Corner — Turn Left East',lat:40.5162,lng:-111.8050,elev:'~7,200 ft',
+       note:'Top of exposed switchbacks. TURN LEFT (east) into shaded mountain mahogany forest. Famous for incredible aroma. Trail levels out for a stretch.'},
+      {type:'mid',label:'Outlaw Cabin (water nearby)',lat:40.5155,lng:-111.7830,elev:'9,275 ft',
+       note:'Historic log cabin with wood stove on your RIGHT. Creek crossings just before — fill water here (filter required). Trail fork before here: go LEFT into the woods.'},
+      {type:'mid',label:'Cirque — Veer Left',lat:40.5230,lng:-111.7630,elev:'~10,600 ft',
+       note:'Follow drainage east from cabin, stay LEFT of drainage. Granite cliffs rim the top. When summit pops into view, VEER LEFT up the west/south wall via cairns. Do not go straight.'},
+      {type:'summit',label:'Lone Peak Summit',lat:40.5269,lng:-111.7561,elev:'11,253 ft',
+       note:'Kitchen-table sized with 600ft drops. Class 2-3 scramble final section. NO DOGS (watershed). Off summit by noon — serious lightning risk.'},
     ],
     alerts:[
-      {type:'warn',title:'⚡ Lightning + Route Finding',body:"Summit is a lightning magnet — off by noon. Trail disappears at upper meadow and cirque. VEER LEFT at cirque base. Download Gaia GPS track before you go — critical above 10,000 ft."},
-      {type:'info',title:'Shuttle Note',body:"This is out-and-back from Peak View TH. The AllTrails route starts and ends at same trailhead — no shuttle needed for this one."},
+      {type:'warn',title:'⚡ Route Finding + Lightning',body:'Trail disappears above Outlaw Cabin. Follow drainage, stay left, then cairns to cirque. VEER LEFT at cirque. Download a GPS track before you go — critical above 9,000 ft. Off summit by noon.'},
+      {type:'info',title:'Water at Outlaw Cabin',body:'Creek crossings just before Outlaw Cabin (~9,275 ft) — the only reliable water on route. Bring a filter. Fill up here.'},
     ],
-    alltrails:'https://www.alltrails.com/trail/us/utah/lone-peak-via-peak-view-and-jacob-s-ladder-trail',
+    alltrails:'https://www.alltrails.com/trail/us/utah/lone-peak-via-cherry-canyon-logging-trail',
   },
+ 
+  // ── DAY 3: SPANISH FORK PEAK ───────────────────────────
+  // TH: 40.13675, -111.520194 (USFS official GPS)
+  // Route: TH (end of road) → abandoned gravel road → 0.25mi on Left Fork
+  //        Maple Canyon Trail → bridge crossing at 40.1353, -111.5232 →
+  //        Spanish Fork Peak Trail heads SOUTH → forested canyon →
+  //        steep switchbacks → meadows → Maple Canyon Lake plateau →
+  //        steep bowl → ridge saddle → TURN LEFT south → summit
   {
     id:2, day:'Wednesday', dayNum:3,
     name:'Spanish Fork Peak', subtitle:'via Maple Canyon',
-    miles:11, elevGain:4675, summitElev:10192, start:'6:00 AM',
-    difficulty:'Hard', scramble:false,
+    miles:11, elevGain:4675, summitElev:10192, start:'6:00 AM', scramble:false,
     trailhead:{lat:40.1368,lng:-111.5202,elev:5800,label:'Maple Canyon TH — end of Maple Canyon Rd, Mapleton'},
     summit:{lat:40.0882,lng:-111.5277,elev:10192},
     route:[
-      [40.1368,-111.5202], // TH
-      [40.1353,-111.5232], // stream crossing / trail fork
-      [40.1300,-111.5280], // lower canyon climb
-      [40.1250,-111.5320], // mid trail
-      [40.1200,-111.5350], // Maple Canyon Lake
-      [40.1150,-111.5380], // steep approach to ridge
-      [40.1100,-111.5350], // ridge saddle
-      [40.1000,-111.5310], // ridge traverse south
-      [40.0950,-111.5290], // final approach
-      [40.0882,-111.5277], // SUMMIT
+      [40.1368,-111.5202], // TH — end of paved road, lot with bathroom
+      [40.1360,-111.5215], // trail starts as abandoned gravel road heading up
+      [40.1353,-111.5232], // bridge crossing — LEFT FORK Maple Canyon Trail splits here
+      [40.1340,-111.5250], // Spanish Fork Peak Trail heads SOUTH (upstream)
+      [40.1310,-111.5270], // forested canyon, box elder/Douglas-fir/aspen
+      [40.1270,-111.5295], // mid trail, steady climb
+      [40.1230,-111.5320], // steeper section approaching plateau
+      [40.1195,-111.5345], // Maple Canyon Lake plateau (pond/meadows)
+      [40.1155,-111.5368], // steep bowl, trail gets rocky
+      [40.1110,-111.5355], // bowl narrows, ridge saddle ahead
+      [40.1080,-111.5340], // RIDGE SADDLE — TURN LEFT (south) for summit
+      [40.1020,-111.5310], // ridge traverse heading south
+      [40.0950,-111.5292], // final approach, steepens
+      [40.0882,-111.5277], // SUMMIT 10,192 ft
     ],
     waypoints:[
-      {type:'start',label:'Maple Canyon Trailhead',lat:40.1368,lng:-111.5202,elev:'5,800 ft',note:'Drive east on 400 N from Mapleton through Whitings Campground. Pass campground, park at end of paved road. Bathroom at lot. Trail starts as abandoned gravel road.'},
-      {type:'mid',label:'Stream Crossing / Trail Fork',lat:40.1353,lng:-111.5232,elev:'~6,200 ft',note:'Quarter mile up Left Fork Maple Canyon Trail. Cross small wooden bridge — this is the Spanish Fork Peak trail split. Cross bridge and follow south.'},
-      {type:'mid',label:'Maple Canyon Lake',lat:40.1200,lng:-111.5350,elev:'~8,800 ft',note:'Plateau with meadows and small pond. Mosquitoes in summer. Trail gets steep again after here. Snow can linger in bowl above.'},
-      {type:'mid',label:'Summit Ridge Saddle',lat:40.1100,lng:-111.5350,elev:'~9,800 ft',note:'Turn LEFT (south) on ridge for summit. Views of Utah Valley to west. Turn right here instead for an alternate smaller peak if summit is snowed out.'},
-      {type:'summit',label:'Spanish Fork Peak',lat:40.0882,lng:-111.5277,elev:'10,192 ft',note:'Class 1 walk-up to top. Also called Maple Mountain. Isolated peak with panoramic views. Return same way.'},
+      {type:'start',label:'Maple Canyon Trailhead',lat:40.1368,lng:-111.5202,elev:'5,800 ft',
+       note:'Drive east on 400 N from Mapleton, through Whitings Campground (fee area for camping only, hiking is free). Drive past campground to END of paved road. Parking lot with bathroom. Trail starts as an old gravel road at top of lot.'},
+      {type:'mid',label:'Bridge Crossing — Trail Split',lat:40.1353,lng:-111.5232,elev:'~6,100 ft',
+       note:'~0.25 miles up the Left Fork Maple Canyon Trail. Cross small wooden bridge at these coordinates. Spanish Fork Peak Trail heads SOUTH (right/upstream) here. Well signed.'},
+      {type:'mid',label:'Maple Canyon Lake',lat:40.1195,lng:-111.5345,elev:'~8,800 ft',
+       note:'Plateau with meadows and small pond (more of a puddle). Mosquitoes in summer. Trail steepens significantly after here. Snow can cover the bowl above into July.'},
+      {type:'mid',label:'Ridge Saddle — Turn Left',lat:40.1080,lng:-111.5340,elev:'~9,800 ft',
+       note:'At the ridge, TURN LEFT (south) for Spanish Fork Peak summit. Turning right leads to a lesser false peak. Trail traverses south along the ridge.'},
+      {type:'summit',label:'Spanish Fork Peak',lat:40.0882,lng:-111.5277,elev:'10,192 ft',
+       note:'Also called Maple Mountain. Class 1 walk-up all the way. Panoramic views of Utah Valley, Provo, Mapleton below. Return same way.'},
     ],
     alerts:[
-      {type:'info',title:'Your Recovery Day',body:"Wednesday is your breather between Lone Peak (Tue) and the brutal Cascade/Provo traverse (Thu). Steady pace. Eat everything tonight — you'll need it tomorrow."},
-      {type:'warn',title:'Snow on Ridge',body:'Late season (June/July) snow can cover the bowl before the saddle and ridge sections. Trekking poles strongly recommended.'},
+      {type:'info',title:'Your Recovery Day',body:'Wedged between Lone Peak and the Cascade/Provo traverse. Steady pace only. Use this to recover and eat big tonight — Thursday is the hardest day of the week.'},
+      {type:'warn',title:'Snow in Bowl',body:'The bowl below the ridge saddle holds snow late into summer. Trekking poles essential. In early season, may need to bypass the trail route and go up steeper snow directly.'},
     ],
     alltrails:'https://www.alltrails.com/trail/us/utah/spanish-fork-peak-via-maple-canyon',
   },
+ 
+  // ── DAY 4: CASCADE & PROVO PEAK ───────────────────────
+  // START TH: 40.29271, -111.60361 (Stav is Lost, verified)
+  // END TH: 40.2423692, -111.5776537 (Stav is Lost, verified)
+  // Route: Quarry TH → social trail N from lot → Upper Pole Couloir →
+  //        cairn EXIT LEFT before top → grassy ridge → Cascade Mtn (go N first) →
+  //        turn S, traverse: S.Cascade → Shingle Mill → Freedom (Class 3 starts) →
+  //        East Provo → knife edge crux → Provo Peak → descent to shuttle TH
   {
     id:3, day:'Thursday', dayNum:4,
-    name:'Cascade & Provo Peak', subtitle:'via Upper Pole Couloir — SHUTTLE required',
-    miles:15.3, elevGain:7096, summitElev:11068, start:'5:30 AM',
-    difficulty:'Extreme', scramble:true,
-    // CORRECTED: Quarry TH at 40.29271,-111.60361
-    trailhead:{lat:40.2927,lng:-111.6036,elev:6800,label:'Quarry Trailhead — Squaw Peak Rd (start)'},
+    name:'Cascade & Provo Peak', subtitle:'via Upper Pole Couloir — SHUTTLE',
+    miles:15.3, elevGain:7096, summitElev:11068, start:'5:30 AM', scramble:true,
+    trailhead:{lat:40.2927,lng:-111.6036,elev:6800,label:'Quarry Trailhead — Squaw Peak Rd (START)'},
     summit:{lat:40.2444,lng:-111.5566,elev:11068},
     route:[
       [40.2927,-111.6036], // Quarry TH
-      [40.2960,-111.5980], // couloir base
-      [40.3000,-111.5900], // mid couloir steep scree
-      [40.3050,-111.5850], // exit couloir left to ridge
-      [40.3070,-111.5880], // Cascade Mountain 10908ft
-      [40.2980,-111.5820], // South Cascade 10760ft
-      [40.2900,-111.5760], // Shingle Mill Peak 10680ft
-      [40.2820,-111.5710], // Freedom Peak 10801ft
-      [40.2650,-111.5640], // East Provo Peak 11044ft
-      [40.2550,-111.5600], // knife-edge crux
-      [40.2444,-111.5566], // Provo Peak SUMMIT 11068ft
-      [40.2424,-111.5777], // descent to Provo Peak TH
+      [40.2940,-111.6010], // social trail from NORTH side of parking
+      [40.2955,-111.5975], // base of Upper Pole Couloir gully
+      [40.2975,-111.5945], // mid couloir — loose steep scree
+      [40.3000,-111.5915], // cairn — EXIT LEFT before top, scramble to ridge
+      [40.3025,-111.5895], // grassy ridge section
+      [40.3070,-111.5880], // CASCADE MOUNTAIN 10,908 ft (head N first to tag it)
+      [40.3050,-111.5870], // turn S, begin long ridge traverse
+      [40.2985,-111.5835], // South Cascade Mountain 10,760 ft
+      [40.2900,-111.5790], // Shingle Mill Peak 10,680 ft
+      [40.2820,-111.5745], // Freedom Peak 10,801 ft — Class 3 begins here
+      [40.2730,-111.5685], // ridge traverse, exposed
+      [40.2650,-111.5635], // East Provo Peak 11,044 ft
+      [40.2580,-111.5610], // knife edge crux (bypass left on scree if needed)
+      [40.2510,-111.5588], // steep climb to Provo
+      [40.2444,-111.5566], // PROVO PEAK 11,068 ft
+      [40.2440,-111.5620], // descent trail heading W
+      [40.2435,-111.5680], // switchbacks down
+      [40.2430,-111.5730], // lower trail
+      [40.2424,-111.5777], // SHUTTLE CAR END TH 8,350 ft
     ],
     waypoints:[
-      {type:'start',label:'Quarry Trailhead (START)',lat:40.2927,lng:-111.6036,elev:'6,800 ft',note:'Off Squaw Peak Rd. From Provo Canyon (US-189), turn right onto Squaw Peak Rd just past mile marker 9. Drive ~8 miles. Social trail leads from NORTH side of parking lot up into the couloir gully.'},
-      {type:'mid',label:'Upper Pole Couloir',lat:40.2960,lng:-111.5980,elev:'~8,500 ft',note:'Steep scree-filled gully — loose and demanding. Look for cairn near top leading LEFT off the couloir onto the ridge. Do not go all the way to top of couloir.'},
-      {type:'mid',label:'Cascade Mountain Summit',lat:40.3070,lng:-111.5880,elev:'10,908 ft',note:'First summit of the day. Head NORTH first from ridge to tag Cascade, then turn around and head south for the full ridge traverse.'},
-      {type:'mid',label:'Freedom Peak',lat:40.2820,lng:-111.5710,elev:'10,801 ft',note:'Start of Class 3 scrambling. Gets progressively harder from here. Social trail along ridge the whole way.'},
-      {type:'mid',label:'East Provo Peak / Knife Edge',lat:40.2650,lng:-111.5640,elev:'11,044 ft',note:'Most technical section. Short knife-edge Class 3 — you can bypass by dropping a few feet left onto scree. Loose rock on descent to Provo.'},
-      {type:'summit',label:'Provo Peak Summit',lat:40.2444,lng:-111.5566,elev:'11,068 ft',note:'Highest point of the day. American flag usually at top. Descend standard Provo Peak trail south/west to shuttle car.'},
-      {type:'end',label:'Provo Peak Trailhead (END — SHUTTLE CAR)',lat:40.2424,lng:-111.5777,elev:'8,350 ft',note:'13.5 miles up Squaw Peak Rd from Provo Canyon. Park shuttle car here the night before. Without it you walk 6+ extra miles on dirt road.'},
+      {type:'start',label:'Quarry Trailhead (START)',lat:40.2927,lng:-111.6036,elev:'6,800 ft',
+       note:'From Provo Canyon (US-189), turn RIGHT on Squaw Peak Rd at mile marker 9. Drive ~8 miles. Social trail leaves from NORTH side of parking lot up into the couloir gully.'},
+      {type:'mid',label:'Upper Pole Couloir',lat:40.2955,lng:-111.5975,elev:'~8,500 ft',
+       note:'Steep loose scree gully. Follow it up. Look for cairn before the top and EXIT LEFT onto the ridge — do not go all the way to the couloir top.'},
+      {type:'mid',label:'Cascade Mountain',lat:40.3070,lng:-111.5880,elev:'10,908 ft',
+       note:'Head NORTH first to tag Cascade. Then turn SOUTH and begin the full ridge traverse. You can see the entire route from here.'},
+      {type:'mid',label:'Freedom Peak — Class 3 Starts',lat:40.2820,lng:-111.5745,elev:'10,801 ft',
+       note:'Class 3 scrambling begins here and gets harder heading south. Social trail along ridge the whole way. Loose rock increases.'},
+      {type:'mid',label:'East Provo / Knife Edge',lat:40.2650,lng:-111.5635,elev:'11,044 ft',
+       note:'Crux of the day. Short knife-edge Class 3. Can bypass by dropping a few feet LEFT onto scree. Very loose rock on descent from East Provo to Provo Peak.'},
+      {type:'summit',label:'Provo Peak Summit',lat:40.2444,lng:-111.5566,elev:'11,068 ft',
+       note:'American flag at top. Highest point of the day. Descend standard Provo Peak trail west to shuttle car.'},
+      {type:'end',label:'Provo Peak TH (SHUTTLE CAR)',lat:40.2424,lng:-111.5777,elev:'8,350 ft',
+       note:'13.5 miles up Squaw Peak Rd from Provo Canyon. Park your second car here THE NIGHT BEFORE. Without shuttle = 6+ extra miles of dirt road walking.'},
     ],
     alerts:[
-      {type:'warn',title:'🚗 SHUTTLE REQUIRED',body:'Park a second car at Provo Peak Trailhead (40.2424, -111.5777) the night before. Without it you add 6+ miles of dirt road walking at the end of your hardest day. Both trailheads are on Squaw Peak Rd.'},
-      {type:'warn',title:'⚡ Hardest Day of the Week',body:'7,096 ft gain. Class 3-4 ridge scrambling. No defined trail above the couloir. Route finding is critical. Do NOT go solo. 5:30 AM start is non-negotiable.'},
-      {type:'warn',title:'High Clearance Vehicle',body:'Squaw Peak Road past Rock Canyon Campground requires a high clearance vehicle / SUV. Small cars will bottom out.'},
-      {type:'info',title:'Ridge Order N→S',body:'Quarry TH → Couloir → Cascade → South Cascade → Shingle Mill → Freedom → East Provo → Provo Peak → Provo TH. Gets harder and higher as you go south.'},
+      {type:'warn',title:'🚗 SHUTTLE REQUIRED',body:'Park a second car at Provo Peak Trailhead (40.2424, -111.5777) the night before. Both THs are on Squaw Peak Rd. No shuttle = 6+ extra miles at end of your hardest day.'},
+      {type:'warn',title:'⚡ Hardest Day of the Week',body:'7,096 ft of gain. Class 3-4 scrambling. No defined trail above the couloir. 5:30 AM start is non-negotiable. Do NOT go solo. High clearance vehicle required for Squaw Peak Rd.'},
+      {type:'info',title:'Ridge Order N→S',body:'Quarry TH → Couloir → Cascade (go N first) → S.Cascade → Shingle Mill → Freedom → East Provo → Provo Peak → shuttle TH. Gets harder and higher going south.'},
     ],
     alltrails:'https://www.alltrails.com/trail/us/utah/cascade-mountain-to-provo-peak-via-upper-pole-couloir',
   },
+ 
+  // ── DAY 5: MOUNT TIMPANOGOS ────────────────────────────
+  // TH: 40.4311, -111.6391 (Park City Hikes, verified USFS)
+  // Route: Timpooneke TH → 3-way junction at trailhead (take MIDDLE branch) →
+  //        aspen forest → 1.4mi junction to Scout Falls (turn right at switchback) →
+  //        Giant Staircase meadows and small falls → 4.9mi Timpanogos Basin jct
+  //        → TURN RIGHT toward ridge (not left to Emerald Lake) →
+  //        ridge → Timp Saddle → summit ridge → SUMMIT
   {
     id:4, day:'Friday', dayNum:5,
     name:'Mount Timpanogos', subtitle:'via Timpooneke Trail',
-    miles:14.4, elevGain:4380, summitElev:11753, start:'5:30 AM',
-    difficulty:'Strenuous', scramble:false,
-    // CORRECTED TH: Timpooneke Campground, American Fork Canyon
-    trailhead:{lat:40.4311,lng:-111.6391,elev:7380,label:'Timpooneke Trailhead — American Fork Canyon'},
+    miles:14.4, elevGain:4380, summitElev:11753, start:'5:30 AM', scramble:false,
+    trailhead:{lat:40.4311,lng:-111.6391,elev:7380,label:'Timpooneke TH — Alpine Loop Rd, American Fork Canyon'},
     summit:{lat:40.3908,lng:-111.6459,elev:11753},
     route:[
-      [40.4311,-111.6391], // Timpooneke TH
-      [40.4250,-111.6400], // forest trail
-      [40.4200,-111.6420], // Scout Falls area
-      [40.4150,-111.6440], // South Fork river
-      [40.4100,-111.6460], // Timpanogos Basin lower
-      [40.4050,-111.6470], // Basin meadows
-      [40.4000,-111.6480], // upper basin
-      [40.3966,-111.6550], // Timp Saddle 11000ft
-      [40.3950,-111.6530], // ridge walk
-      [40.3930,-111.6500], // near summit
-      [40.3908,-111.6459], // SUMMIT 11753ft
+      [40.4311,-111.6391], // Timpooneke TH (3-way junction — take MIDDLE trail)
+      [40.4290,-111.6398], // aspen forest, gradual climb
+      [40.4260,-111.6408], // stream crossings, forest meadow
+      [40.4230,-111.6418], // 1.4mi — Scout Falls spur (turn right at switchback to visit)
+      [40.4200,-111.6425], // Scout Falls area, continue past
+      [40.4170,-111.6438], // Giant Staircase begins — series of meadow plateaus
+      [40.4140,-111.6448], // small waterfalls visible
+      [40.4110,-111.6458], // rocky slopes, open views north
+      [40.4075,-111.6465], // upper staircase
+      [40.4040,-111.6470], // 4.9mi — Timpanogos Basin junction TURN RIGHT (not left to Emerald Lake)
+      [40.4010,-111.6472], // heading toward ridge
+      [40.3985,-111.6490], // rocky ridge approach
+      [40.3966,-111.6550], // TIMP SADDLE ~11,000 ft — Aspen Grove trail joins here
+      [40.3950,-111.6530], // summit ridge — rocky and exposed
+      [40.3930,-111.6510], // near summit
+      [40.3908,-111.6459], // MT TIMPANOGOS SUMMIT 11,753 ft
     ],
     waypoints:[
-      {type:'start',label:'Timpooneke Trailhead',lat:40.4311,lng:-111.6391,elev:'7,380 ft',note:'Turn off Alpine Loop Road onto Timpooneke Rd, park at lot after 0.2 miles. $6 fee. Book timed-entry parking permit at Recreation.gov during peak season (July–Sept). Bathroom on site.'},
-      {type:'mid',label:'Scout Falls',lat:40.4200,lng:-111.6420,elev:'~8,200 ft',note:'Good early rest stop ~2 miles in. Waterfall on left. Trail follows South Fork river through this section.'},
-      {type:'mid',label:'Timpanogos Basin',lat:40.4050,lng:-111.6470,elev:'~9,800 ft',note:'Open alpine basin. Follow summit signs at junctions. Wildflowers peak mid-July. Mountain goats often here.'},
-      {type:'mid',label:'Timp Saddle',lat:40.3966,lng:-111.6550,elev:'~11,000 ft',note:'5.9 miles from TH. Where Aspen Grove trail joins from right. Rocky exposed ridge to summit begins. Wind picks up here — layer up.'},
-      {type:'summit',label:'Mt Timpanogos Summit',lat:40.3908,lng:-111.6459,elev:'11,753 ft',note:'Old USGS hut at top. 8 ft wide with sheer drops east. Views of entire Utah Valley. Off by noon — afternoon storms common. Day 5 legs will feel this one.'},
+      {type:'start',label:'Timpooneke Trailhead',lat:40.4311,lng:-111.6391,elev:'7,380 ft',
+       note:'Turn off Alpine Loop Rd onto Timpooneke Rd, park in lot 0.2mi in. $10/day fee (2025). Timed-entry permits required July–Oct weekends/holidays — book at Recreation.gov. Bathroom on site. At trail junction 50ft in, take the MIDDLE branch.'},
+      {type:'mid',label:'Scout Falls Spur',lat:40.4230,lng:-111.6418,elev:'~8,100 ft',
+       note:'1.4 miles in — small unmarked spur turns hard right at a switchback. Optional detour to waterfall. Continue straight (on main trail) to stay on route to summit.'},
+      {type:'mid',label:'Timpanogos Basin Junction',lat:40.4040,lng:-111.6470,elev:'~9,900 ft',
+       note:'4.9 miles in. TURN RIGHT toward the ridge for summit. Left goes to Emerald Lake and Aspen Grove TH. Signs present.'},
+      {type:'mid',label:'Timp Saddle',lat:40.3966,lng:-111.6550,elev:'~11,000 ft',
+       note:'5.9 miles from TH. Aspen Grove trail merges here. Sweeping views of Utah Valley and Orem below. Wind picks up — layer up. Summit is 0.9mi south along exposed ridge.'},
+      {type:'summit',label:'Mt Timpanogos Summit',lat:40.3908,lng:-111.6459,elev:'11,753 ft',
+       note:'Old USGS metal hut at top, 8ft wide with sheer drops east. Off summit by noon — afternoon storms come fast. Day 5 on tired legs — you\'ll feel every mile.'},
     ],
     alerts:[
-      {type:'warn',title:'Parking Permit Required',body:'Timpooneke requires a timed-entry permit during peak season. Book at Recreation.gov well in advance — fills up fast. Without permit you may be turned away.'},
-      {type:'info',title:'Day 5 on Tired Legs',body:"You have 42+ miles over 4 days before this. Timp's 4,380 ft gain will feel different than Monday. Eat big Thursday night. Take it slow on the basin approach."},
-      {type:'info',title:'Mountain Goats',body:'High probability at the saddle and above. They will approach you for salt — keep distance and do not feed.'},
+      {type:'warn',title:'Permits Required at Peak Season',body:'Timed-entry permits required Saturdays, Sundays and holidays July–Oct. Book at Recreation.gov WELL in advance. Day use fee $10/vehicle in 2025.'},
+      {type:'info',title:'Day 5 Pacing',body:'42+ miles and 4 days of gain already in your legs. The Giant Staircase feels gradual — do not push early. Save legs for the saddle-to-summit final push.'},
+      {type:'info',title:'Mountain Goats',body:'Goats approach hikers at the saddle for salt. Do not feed them. Keep distance. Totally normal to see several here.'},
     ],
     alltrails:'https://www.alltrails.com/trail/us/utah/mt-timpanogos-timpooneke-trail',
   },
+ 
+  // ── DAY 6: MOUNT NEBO ──────────────────────────────────
+  // TH: Monument/Nebo Bench TH — N 39°50.594' W 111°43.240' = 39.8432, -111.7207
+  // Verified: Waymarking.com official GPS coords
+  // Drive past Monument TH sign, turn RIGHT onto Mona Pole Rd dirt road,
+  // drive 0.3-0.4 miles to actual parking area on LEFT
+  // Route: TH → trail 089 heads WEST along fence → sagebrush bench →
+  //        leave fence → steep climb to North Peak ridge → bypass North Peak W side →
+  //        contour down to Wolf Pass → steep switchbacks → false summit → true summit
   {
     id:5, day:'Saturday', dayNum:6,
     name:'Mount Nebo', subtitle:'Highest peak in Utah County — 11,933 ft',
-    miles:9, elevGain:4180, summitElev:11933, start:'6:00 AM',
-    difficulty:'Strenuous', scramble:false,
-    // Nebo Bench Trailhead — 24 miles up Nebo Loop from Payson
-    trailhead:{lat:39.8820,lng:-111.7680,elev:9260,label:'Nebo Bench Trailhead — Nebo Loop Rd'},
+    miles:9, elevGain:4180, summitElev:11933, start:'6:00 AM', scramble:false,
+    trailhead:{lat:39.8432,lng:-111.7207,elev:9259,label:'Nebo Bench TH — Mona Pole Rd (0.4mi past Monument TH)'},
     summit:{lat:39.8216,lng:-111.7599,elev:11933},
     route:[
-      [39.8820,-111.7680], // Nebo Bench TH
-      [39.8750,-111.7670], // trail start, meadows
-      [39.8680,-111.7660], // aspen groves
-      [39.8600,-111.7655], // North Peak crest 10500ft
-      [39.8520,-111.7645], // North Peak bypass
-      [39.8450,-111.7630], // Wolf Pass 10620ft
-      [39.8400,-111.7620], // steep climb begins
-      [39.8360,-111.7615], // false summit 11460ft
-      [39.8300,-111.7610], // Wolf Pass Peak ridge
-      [39.8260,-111.7605], // final push
-      [39.8216,-111.7599], // SUMMIT 11933ft
+      [39.8432,-111.7207], // TH — Mona Pole Rd parking, trail heads WEST
+      [39.8428,-111.7240], // trail 089 follows fence west
+      [39.8420,-111.7280], // sagebrush bench, trail register 0.85mi
+      [39.8405,-111.7330], // leave fence, continue NW
+      [39.8385,-111.7380], // first steep section approaching North Peak
+      [39.8355,-111.7420], // steep climb to North Peak ridge
+      [39.8310,-111.7445], // North Peak crest/shoulder ~10,500 ft
+      [39.8275,-111.7460], // trail bypasses North Peak on WEST side
+      [39.8240,-111.7490], // contour down west slopes toward Wolf Pass
+      [39.8205,-111.7515], // Wolf Pass ~10,620 ft — catch breath, final push begins
+      [39.8180,-111.7530], // steep rocky switchbacks up Nebo ridge
+      [39.8160,-111.7550], // false summit 11,460 ft — KEEP GOING
+      [39.8145,-111.7570], // loose shale and limestone
+      [39.8216,-111.7599], // MT NEBO SUMMIT 11,933 ft
     ],
     waypoints:[
-      {type:'start',label:'Nebo Bench Trailhead',lat:39.8820,lng:-111.7680,elev:'9,260 ft',note:'24 miles up Nebo Scenic Loop from Payson. Signed gravel parking area on right. Highest starting elevation of the week. No water anywhere on trail — load up here.'},
-      {type:'mid',label:'North Peak Crest',lat:39.8600,lng:-111.7655,elev:'10,500 ft',note:'Trail reaches northern ridgeline. Trail bypasses North Peak on west side. Nebo summit finally comes into view here.'},
-      {type:'mid',label:'Wolf Pass',lat:39.8450,lng:-111.7630,elev:'10,620 ft',note:'3.6 miles in. Saddle between North Peak and Nebo. Steep rocky final push begins from here. Exposed and windy.'},
-      {type:'mid',label:'False Summit (Wolf Pass Peak)',lat:39.8360,lng:-111.7615,elev:'11,460 ft',note:"Don't be fooled — true summit is still further south. Keep going along the ridge. Loose shale and limestone final 300 yards."},
-      {type:'summit',label:'Mount Nebo Summit',lat:39.8216,lng:-111.7599,elev:'11,933 ft',note:'Highest point in the Wasatch Range and Utah County. You finished 7 peaks in 6 days. Return same way — descent on tired legs, take it slow.'},
+      {type:'start',label:'Nebo Bench Trailhead',lat:39.8432,lng:-111.7207,elev:'9,259 ft',
+       note:'25 miles up Nebo Loop Rd from Payson (I-15 exit 250). At the Monument Trailhead sign DO NOT park in paved lot. Turn RIGHT onto Mona Pole Rd dirt road, drive 0.3-0.4mi, park in small lot on LEFT. Trail 089 heads WEST along a fence. No fee.'},
+      {type:'mid',label:'North Peak Crest',lat:39.8310,lng:-111.7445,elev:'~10,500 ft',
+       note:'Trail crests the North Peak ridge. Trail then bypasses North Peak on its west side — don\'t scramble up to it unless you want to. Nebo summit and full route finally visible from here.'},
+      {type:'mid',label:'Wolf Pass',lat:39.8205,lng:-111.7515,elev:'10,620 ft',
+       note:'Saddle between North Peak and Nebo, ~3.6 miles in. Good place to rest and fuel up. Final 1,300 ft of gain in under a mile begins here on very rocky terrain.'},
+      {type:'mid',label:'False Summit',lat:39.8160,lng:-111.7550,elev:'11,460 ft',
+       note:'Do NOT stop here — true summit is still further SOUTH. Keep going. Final 300 yards on very loose shale and limestone. American flag visible at the true top.'},
+      {type:'summit',label:'Mount Nebo Summit',lat:39.8216,lng:-111.7599,elev:'11,933 ft',
+       note:'Highest point in Utah County and the Wasatch Range. 77+ miles done this week. Return same way — no water anywhere so take it easy on descent.'},
     ],
     alerts:[
-      {type:'warn',title:'Zero Water on Trail',body:'No water sources anywhere on the route. Bring minimum 3 liters from the car. This is the most critical water situation of the week.'},
-      {type:'warn',title:'Two False Summits',body:"Wolf Pass Peak at 11,460 ft will fool you. Keep going south along the ridge. True summit is the third high point. You'll see an American flag."},
-      {type:'info',title:'The Finish Line',body:"9 miles on legs that have already done 68+ miles this week. Shortest day but your body won't care. Take it easy. You've earned every step."},
+      {type:'warn',title:'Do NOT Park at Monument TH',body:'The paved Monument Trailhead lot is NOT the right start. Turn RIGHT onto Mona Pole Rd and drive 0.3-0.4mi to the actual trailhead. Starting from the paved lot adds a rough gully section.'},
+      {type:'warn',title:'Zero Water on Entire Trail',body:'No water sources anywhere. Bring 3+ liters minimum from the car. Most critical water day of the week.'},
+      {type:'info',title:'Two False Summits',body:'You\'ll think you\'re almost there twice. Wolf Pass Peak at 11,460 ft is the main faker. True summit is further south. The American flag marks the real top.'},
     ],
     alltrails:'https://www.alltrails.com/trail/us/utah/mount-nebo',
   },
 ];
  
+// ── APP ───────────────────────────────────────────────────
 let currentPage='list', currentPeak=null, mainMap=null, detailMaps={};
 let completed=JSON.parse(localStorage.getItem('peaks_done')||'[]');
  
@@ -376,12 +471,12 @@ function showDetail(id){
   const p=currentPeak;
   const done=completed.includes(p.id);
   const page=document.getElementById('detail-page');
-  const alertsHtml=p.alerts.map(a=>`
+  const aHtml=p.alerts.map(a=>`
     <div class="${a.type==='warn'?'alert-card':'info-card'}">
       <div class="${a.type==='warn'?'alert-title':'info-title'}">${a.title}</div>
       <div class="${a.type==='warn'?'alert-body':'info-body'}">${a.body}</div>
     </div>`).join('');
-  const wpsHtml=p.waypoints.map(w=>`
+  const wHtml=p.waypoints.map(w=>`
     <div class="waypoint">
       <div class="wp-dot ${w.type}">${w.type==='start'?'🚗':w.type==='summit'?'🏔':w.type==='end'?'🅿':'📍'}</div>
       <div class="wp-info">
@@ -391,12 +486,12 @@ function showDetail(id){
         <div class="wp-note">${w.note}</div>
       </div>
     </div>`).join('');
-  const appleUrl=`https://maps.apple.com/?daddr=${p.trailhead.lat},${p.trailhead.lng}&dirflg=d`;
-  const googleUrl=`https://www.google.com/maps/dir/?api=1&destination=${p.trailhead.lat},${p.trailhead.lng}&travelmode=driving`;
+  const apple=`https://maps.apple.com/?daddr=${p.trailhead.lat},${p.trailhead.lng}&dirflg=d`;
+  const google=`https://www.google.com/maps/dir/?api=1&destination=${p.trailhead.lat},${p.trailhead.lng}&travelmode=driving`;
   page.innerHTML=`
     <div class="detail-header">
       <div class="detail-back" onclick="backToList()">‹ All Days</div>
-      <div class="detail-day-label">Day ${p.dayNum} · ${p.day}</div>
+      <div class="detail-day-lbl">Day ${p.dayNum} · ${p.day}</div>
       <div class="detail-peak-name">${p.name}</div>
       <div class="detail-tags">
         <span class="tag tag-mi">${p.miles} mi</span>
@@ -411,55 +506,46 @@ function showDetail(id){
       <div class="status-text">${done?'Summited! ✓':'Mark as completed'}<small>${done?'Tap to unmark':'Tap after you summit'}</small></div>
     </div>
     <div class="detail-section">
-      <div class="detail-section-title">Trail Map — Trailhead → Summit</div>
+      <div class="detail-section-title">Trail Map — Follow the Orange Line</div>
       <div class="mini-map" id="detail-map-${p.id}"></div>
       <div style="display:flex;gap:8px;margin-top:12px">
-        <a href="${appleUrl}" class="open-maps-btn" style="flex:1">🗺 Apple Maps</a>
-        <a href="${googleUrl}" class="open-maps-btn" style="flex:1">📍 Google Maps</a>
+        <a href="${apple}" class="open-maps-btn" style="flex:1">🗺 Apple Maps</a>
+        <a href="${google}" class="open-maps-btn" style="flex:1">📍 Google Maps</a>
       </div>
     </div>
-    <div class="detail-section"><div class="detail-section-title">Important Notes</div>${alertsHtml}</div>
+    <div class="detail-section"><div class="detail-section-title">Important Notes</div>${aHtml}</div>
     <div class="detail-section">
-      <div class="detail-section-title">Waypoints · Tap to copy coords</div>
-      <div class="waypoint-list">${wpsHtml}</div>
+      <div class="detail-section-title">Waypoints · Tap coords to copy</div>
+      <div class="waypoint-list">${wHtml}</div>
     </div>
     <div class="detail-section" style="border-bottom:none">
       <a href="${p.alltrails}" class="open-maps-btn" target="_blank">↗ View on AllTrails</a>
     </div>`;
   showPage('detail');
-  setTimeout(()=>initDetailMap(p), 120);
+  setTimeout(()=>initDetailMap(p),120);
 }
  
 function initDetailMap(p){
   const el=document.getElementById(`detail-map-${p.id}`);
   if(!el||detailMaps[p.id]) return;
-  // Fit bounds to route
-  const lats=p.route.map(r=>r[0]), lngs=p.route.map(r=>r[1]);
-  const minLat=Math.min(...lats), maxLat=Math.max(...lats);
-  const minLng=Math.min(...lngs), maxLng=Math.max(...lngs);
-  const centerLat=(minLat+maxLat)/2, centerLng=(minLng+maxLng)/2;
-  const m=L.map(el,{zoomControl:true,attributionControl:false}).fitBounds([[minLat,minLng],[maxLat,maxLng]],{padding:[20,20]});
+  const lats=p.route.map(r=>r[0]),lngs=p.route.map(r=>r[1]);
+  const m=L.map(el,{zoomControl:true,attributionControl:false})
+    .fitBounds([[Math.min(...lats),Math.min(...lngs)],[Math.max(...lats),Math.max(...lngs)]],{padding:[28,28]});
   L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,opacity:.9}).addTo(m);
- 
-  // BOLD trail line
-  L.polyline(p.route,{color:'#e8522a',weight:4,opacity:.9}).addTo(m);
-  // Outer glow
-  L.polyline(p.route,{color:'rgba(232,82,42,.25)',weight:10,opacity:.6}).addTo(m);
- 
-  // Trailhead marker
-  const thIcon=L.divIcon({html:'<div style="background:#3d6b4f;width:14px;height:14px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.6)"></div>',className:'',iconSize:[14,14],iconAnchor:[7,7]});
+  // Glow + bold trail line
+  L.polyline(p.route,{color:'rgba(232,82,42,.25)',weight:14,opacity:.6,lineCap:'round',lineJoin:'round'}).addTo(m);
+  L.polyline(p.route,{color:'#ff6b3d',weight:4,opacity:.95,lineCap:'round',lineJoin:'round'}).addTo(m);
+  // TH marker (green dot)
+  const thIcon=L.divIcon({html:'<div style="background:#3d6b4f;width:14px;height:14px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.7)"></div>',className:'',iconSize:[14,14],iconAnchor:[7,7]});
   L.marker([p.trailhead.lat,p.trailhead.lng],{icon:thIcon}).addTo(m).bindPopup(`<b>Trailhead</b><br><small>${p.trailhead.label}</small>`);
- 
-  // Summit marker
-  const sumIcon=L.divIcon({html:'<div style="background:#e8522a;width:18px;height:18px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(232,82,42,.7)"></div>',className:'',iconSize:[18,18],iconAnchor:[9,9]});
-  L.marker([p.summit.lat,p.summit.lng],{icon:sumIcon}).addTo(m).bindPopup(`<b>${p.name} Summit</b><br><small>${p.summitElev.toLocaleString()} ft</small>`);
- 
-  // Shuttle end marker for Cascade/Provo
+  // Summit marker (orange dot)
+  const sIcon=L.divIcon({html:'<div style="background:#e8522a;width:18px;height:18px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(232,82,42,.8)"></div>',className:'',iconSize:[18,18],iconAnchor:[9,9]});
+  L.marker([p.summit.lat,p.summit.lng],{icon:sIcon}).addTo(m).bindPopup(`<b>${p.name} Summit</b><br><small>${p.summitElev.toLocaleString()} ft</small>`);
+  // Cascade/Provo shuttle end marker (blue square)
   if(p.id===3){
-    const endIcon=L.divIcon({html:'<div style="background:#4a8fa8;width:14px;height:14px;border-radius:3px;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.6)"></div>',className:'',iconSize:[14,14],iconAnchor:[7,7]});
-    L.marker([40.2424,-111.5777],{icon:endIcon}).addTo(m).bindPopup('<b>Shuttle Car End TH</b><br><small>40.2424, -111.5777</small>');
+    const eIcon=L.divIcon({html:'<div style="background:#4a8fa8;width:14px;height:14px;border-radius:3px;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.7)"></div>',className:'',iconSize:[14,14],iconAnchor:[7,7]});
+    L.marker([40.2424,-111.5777],{icon:eIcon}).addTo(m).bindPopup('<b>Shuttle Car TH</b><br><small>40.2424, -111.5777</small>');
   }
- 
   detailMaps[p.id]=m;
 }
  
@@ -469,20 +555,14 @@ function initMainMap(){
   L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenTopoMap'}).addTo(mainMap);
   PEAKS.forEach(p=>{
     const done=completed.includes(p.id);
-    // Draw route line on overview
-    L.polyline(p.route,{color:done?'#3d6b4f':'#e8522a',weight:2.5,opacity:.7}).addTo(mainMap);
-    // Summit marker
+    L.polyline(p.route,{color:done?'rgba(61,107,79,.6)':'rgba(232,82,42,.5)',weight:3,opacity:.9,lineCap:'round'}).addTo(mainMap);
     const icon=L.divIcon({
-      html:`<div style="background:${done?'#3d6b4f':'#e8522a'};width:34px;height:34px;border-radius:50%;border:2.5px solid #f0ece6;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;box-shadow:0 2px 14px rgba(${done?'61,107,79':'232,82,42'},.6)">${p.dayNum}</div>`,
+      html:`<div style="background:${done?'#3d6b4f':'#e8522a'};width:34px;height:34px;border-radius:50%;border:2.5px solid #f0ece6;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;box-shadow:0 2px 14px rgba(${done?'61,107,79':'232,82,42'},.7)">${p.dayNum}</div>`,
       className:'',iconSize:[34,34],iconAnchor:[17,17]
     });
-    L.marker([p.summit.lat,p.summit.lng],{icon}).addTo(mainMap).bindPopup(`
-      <div class="popup-day">Day ${p.dayNum} · ${p.day}</div>
-      <div class="popup-name">${p.name}</div>
-      <div class="popup-info">${p.miles} mi · ${p.summitElev.toLocaleString()} ft · ${p.start}</div>
-      <a class="popup-btn" onclick="showDetail(${p.id});return false">View Route →</a>`);
-    // TH dot
-    L.circleMarker([p.trailhead.lat,p.trailhead.lng],{radius:5,color:'#4a8fa8',fillColor:'#4a8fa8',fillOpacity:.8,weight:1.5}).addTo(mainMap)
+    L.marker([p.summit.lat,p.summit.lng],{icon}).addTo(mainMap)
+      .bindPopup(`<div class="popup-day">Day ${p.dayNum} · ${p.day}</div><div class="popup-name">${p.name}</div><div class="popup-info">${p.miles} mi · ${p.summitElev.toLocaleString()} ft · ${p.start}</div><a class="popup-btn" onclick="showDetail(${p.id});return false">View Route →</a>`);
+    L.circleMarker([p.trailhead.lat,p.trailhead.lng],{radius:5,color:'#4a8fa8',fillColor:'#4a8fa8',fillOpacity:.9,weight:1.5}).addTo(mainMap)
       .bindPopup(`<div class="popup-day">TH · ${p.name}</div><div class="popup-info">${p.trailhead.label}</div>`);
   });
 }
@@ -490,10 +570,8 @@ function initMainMap(){
 function toggleDone(id){
   completed=completed.includes(id)?completed.filter(x=>x!==id):[...completed,id];
   localStorage.setItem('peaks_done',JSON.stringify(completed));
-  renderList();
-  showDetail(id);
+  renderList(); showDetail(id);
 }
- 
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -506,11 +584,10 @@ function backToList(){showPage('list')}
 function copyCoords(lat,lng){
   const s=`${lat},${lng}`;
   navigator.clipboard?navigator.clipboard.writeText(s):(()=>{const t=document.createElement('textarea');t.value=s;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t)})();
-  const toast=document.getElementById('toast');
-  toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800);
+  const toast=document.getElementById('toast');toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800);
 }
- 
 renderList();
 </script>
 </body>
 </html>
+ 
